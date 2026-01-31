@@ -37,7 +37,7 @@ class AiServiceDashboardDisplay implements IDisplay {
 	/**
 	 * Main output handler (HTML + JSON + Test).
 	 */
-	public function getOutput($out = "html") {
+	public function getOutput(string $out = 'html', bool $final = false): string {
 		$action = (string)$this->request->get('action', '');
 
 		// AJAX test mode (returns JSON)
@@ -64,7 +64,7 @@ class AiServiceDashboardDisplay implements IDisplay {
 		return $this->view->loadTemplate();
 	}
 
-	public function getHelp() {
+	public function getHelp(): string {
 		return 'Displays AI services and provides API key validation tests.';
 	}
 
@@ -172,4 +172,3 @@ class AiServiceDashboardDisplay implements IDisplay {
 		return substr($key, 0, 4) . '******' . substr($key, -4);
 	}
 }
-
