@@ -20,41 +20,75 @@ function icon_status($type) {
 ?>
 
 <section class="ai-dashboard">
-	<div class="grid">
-		<?php foreach ($this->_['services'] as $service) { ?>
-		<div class="card" data-service="<?php echo $service['id']; ?>">
 
-			<div class="header">
-				<strong><?php echo $service['name']; ?></strong>
+	<?php foreach ($this->_['groups'] as $group) { ?>
+		<div class="group">
+			<div class="group-header">
+				<h2><?php echo htmlspecialchars($group['name']); ?></h2>
+				<div class="group-sub"><?php echo htmlspecialchars($group['id']); ?></div>
 			</div>
 
-			<div class="meta">
-				<div>Endpoint: <?php echo htmlspecialchars($service['endpointShort']); ?></div>
-				<div>API Key: <?php echo htmlspecialchars($service['apikeyShort']); ?></div>
+			<div class="grid">
+				<?php foreach ($group['services'] as $service) { ?>
+				<div class="card" data-service="<?php echo $service['id']; ?>">
+
+					<div class="header">
+						<strong><?php echo htmlspecialchars($service['name']); ?></strong>
+						<div class="service-id"><?php echo htmlspecialchars($service['id']); ?></div>
+					</div>
+
+					<div class="meta">
+						<div>Endpoint: <?php echo htmlspecialchars($service['endpointShort']); ?></div>
+						<div>API Key: <?php echo htmlspecialchars($service['apikeyShort']); ?></div>
+					</div>
+
+					<div class="status-line">
+						<?php echo icon_status('idle'); ?>
+						<span class="status-text">Idle</span>
+					</div>
+
+					<button type="button" class="test-button" data-service="<?php echo $service['id']; ?>">
+						Test Connection
+					</button>
+
+				</div>
+				<?php } ?>
 			</div>
-
-			<div class="status-line">
-				<?php echo icon_status('idle'); ?>
-				<span class="status-text">Idle</span>
-			</div>
-
-			<button type="button" class="test-button" data-service="<?php echo $service['id']; ?>">
-				Test Connection
-			</button>
-
 		</div>
-		<?php } ?>
-	</div>
+	<?php } ?>
+
 </section>
 
-
 <style>
+	.ai-dashboard .group {
+		margin: 2em 0 2.5em 0;
+	}
+
+	.ai-dashboard .group-header {
+		display: flex;
+		align-items: baseline;
+		gap: .8em;
+		margin-bottom: .9em;
+		border-bottom: 1px solid #eee;
+		padding-bottom: .5em;
+	}
+
+	.ai-dashboard .group-header h2 {
+		margin: 0;
+		font-size: 1.2em;
+	}
+
+	.ai-dashboard .group-sub {
+		font-size: .85em;
+		color: #888;
+	}
+
 	/* Responsive grid: 3 → 2 → 1 cards */
 	.ai-dashboard .grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		grid-template-columns: repeat(auto-fill, 280px);
 		gap: 1.5em;
-		margin: 2em 0;
+		justify-content: start;
 	}
 
 	.ai-dashboard .card {
@@ -66,8 +100,18 @@ function icon_status($type) {
 	}
 
 	.ai-dashboard .header {
-		font-size: 1.2em;
+		font-size: 1.1em;
 		margin-bottom: .5em;
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: .8em;
+	}
+
+	.ai-dashboard .service-id {
+		font-size: .75em;
+		color: #888;
+		white-space: nowrap;
 	}
 
 	.ai-dashboard .meta {
@@ -175,4 +219,3 @@ function icon_for(status) {
 // Important: initialize immediately.
 AiDashboardInit();
 </script>
-
