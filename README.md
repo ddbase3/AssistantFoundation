@@ -69,6 +69,5 @@ AssistantFoundation/
 
 ## License
 
-This plugin follows the licensing and contribution model of the BASE3 Framework.
-Please check the main repository for details.
+AssistantFoundation is licensed under the GPL 3.0 license
 
