@@ -1,20 +1,21 @@
 <?php declare(strict_types=1);
 
 /***********************************************************************
- * This file is part of MissionBay for BASE3 Framework.
+ * This file is part of AssistantFoundation for BASE3 Framework.
  *
- * MissionBay extends the BASE3 framework with modular agent flows,
- * resources, and services for AI-driven task execution.
+ * AssistantFoundation extends the BASE3 framework with a unified API
+ * foundation for assistants, chatbots, and agent-based systems.
+ * It provides shared interfaces for modular AI integration.
  *
  * Developed by Daniel Dahme
  * Licensed under GPL-3.0
  * https://www.gnu.org/licenses/gpl-3.0.en.html
  *
- * https://base3.de/v/missionbay
- * https://github.com/ddbase3/MissionBay
+ * https://base3.de/v/assistantfoundation
+ * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace MissionBay\Api;
+namespace AssistantFoundation\Api;
 
 interface IAiTaskService {
 
