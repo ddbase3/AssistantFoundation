@@ -22,6 +22,21 @@ use Base3\Api\IBase;
 interface IAiProvider extends IBase {
 
 	/**
+	 * Sets provider-specific runtime options like endpoint, api key or timeout.
+	 *
+	 * @param array $options
+	 * @return void
+	 */
+	public function setOptions(array $options): void;
+
+	/**
+	 * Returns the currently active provider options.
+	 *
+	 * @return array
+	 */
+	public function getOptions(): array;
+
+	/**
 	 * Sends a request to the provider and returns the decoded response.
 	 *
 	 * @param string $path Relative or provider-specific API path
