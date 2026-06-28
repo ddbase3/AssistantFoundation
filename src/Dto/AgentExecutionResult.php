@@ -15,7 +15,7 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistentFoundation\Dto;
+namespace AssistantFoundation\Dto;
 
 /**
  * AgentExecutionResult

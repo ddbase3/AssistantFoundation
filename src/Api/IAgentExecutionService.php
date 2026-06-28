@@ -15,10 +15,10 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistentFoundation\Api;
+namespace AssistantFoundation\Api;
 
 use Base3\Api\IBase;
-use AssistentFoundation\Dto\AgentExecutionResult;
+use AssistantFoundation\Dto\AgentExecutionResult;
 
 /**
  * IAgentExecutionService
