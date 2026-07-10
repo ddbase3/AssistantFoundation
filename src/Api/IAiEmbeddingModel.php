@@ -17,12 +17,22 @@
 
 namespace AssistantFoundation\Api;
 
+use AssistantFoundation\Dto\AiEmbeddingResult;
+
 /**
  * Interface for embedding models (e.g. OpenAI, Ollama, HuggingFace).
  *
  * Accepts text input and returns one or more embeddings (float vectors).
  */
 interface IAiEmbeddingModel {
+
+	/**
+	 * Encodes text inputs and returns vectors together with normalized usage
+	 * and provider metadata.
+	 *
+	 * @param string[] $texts
+	 */
+	public function embedResult(array $texts): AiEmbeddingResult;
 
 	/**
 	 * Encodes one or multiple texts into embedding vectors.

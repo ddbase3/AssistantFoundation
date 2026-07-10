@@ -17,7 +17,18 @@
 
 namespace AssistantFoundation\Api;
 
+use AssistantFoundation\Dto\AiChatResult;
+
 interface IAiChatModel {
+
+	/**
+	 * Executes a non-streaming chat completion and returns a normalized,
+	 * provider-independent result including tool calls and usage metadata.
+	 *
+	 * @param array $messages
+	 * @param array $tools
+	 */
+	public function complete(array $messages, array $tools = []): AiChatResult;
 
 	/**
 	 * Sends a message list to the assistant model and returns its response.
@@ -37,6 +48,25 @@ interface IAiChatModel {
 	 * @return mixed Raw result from API
 	 */
 	public function raw(array $messages, array $tools = []): mixed;
+
+	/**
+	 * Streams a chat completion and returns the normalized final result.
+	 *
+	 * Existing callbacks remain the live transport boundary. The returned
+	 * result collects the final content and all metadata exposed by the
+	 * provider stream.
+	 *
+	 * @param array $messages
+	 * @param array $tools
+	 * @param callable $onData function(string $delta): void
+	 * @param ?callable $onMeta function(array $meta): void
+	 */
+	public function streamResult(
+		array $messages,
+		array $tools,
+		callable $onData,
+		callable $onMeta = null
+	): AiChatResult;
 
 	/**
 	 * Streams a chat completion in real-time.
