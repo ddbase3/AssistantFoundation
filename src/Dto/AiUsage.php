@@ -44,6 +44,42 @@ final class AiUsage {
 		return new self();
 	}
 
+	/**
+	 * Recreates normalized usage information from an array representation.
+	 *
+	 * Unknown or invalid values are ignored instead of being guessed.
+	 *
+	 * @param array<string,mixed> $data
+	 */
+	public static function fromArray(array $data): self {
+		$rawMetrics = $data['metrics'] ?? [];
+		if(!is_array($rawMetrics)) {
+			$rawMetrics = [];
+		}
+
+		$metrics = [];
+		foreach($rawMetrics as $name => $value) {
+			if(is_string($name) && (is_int($value) || is_float($value))) {
+				$metrics[$name] = $value;
+			}
+		}
+
+		$details = $data['details'] ?? [];
+		if(!is_array($details)) {
+			$details = [];
+		}
+
+		return new self(
+			self::readNullableInt($data, 'input_tokens'),
+			self::readNullableInt($data, 'output_tokens'),
+			self::readNullableInt($data, 'total_tokens'),
+			self::readNullableInt($data, 'cached_input_tokens'),
+			self::readNullableInt($data, 'reasoning_tokens'),
+			$metrics,
+			$details
+		);
+	}
+
 	public function getInputTokens(): ?int {
 		return $this->inputTokens;
 	}
@@ -103,6 +139,23 @@ final class AiUsage {
 			'metrics' => $this->metrics,
 			'details' => $this->details
 		];
+	}
+
+	/**
+	 * @param array<string,mixed> $data
+	 */
+	private static function readNullableInt(array $data, string $key): ?int {
+		$value = $data[$key] ?? null;
+
+		if(is_int($value)) {
+			return $value;
+		}
+
+		if(is_string($value) && preg_match('/^-?[0-9]+$/', $value) === 1) {
+			return (int)$value;
+		}
+
+		return null;
 	}
 
 	private function sumNullable(?int $left, ?int $right): ?int {

@@ -22,33 +22,38 @@ namespace AssistantFoundation\Dto;
  *
  * Immutable result of one agent stage execution.
  *
- * The initial contract deliberately contains only a context patch. Further
- * stage-result semantics can be added without requiring stage implementations
- * to mutate a second result object directly.
+ * It contains the context patch plus provider-neutral execution metadata for
+ * tracing, diagnostics, and user interfaces. Metadata never mutates the agent
+ * context unless a stage also includes it in the patch explicitly.
  */
 final class AgentStageResult {
 
 	/**
 	 * @param array<string,mixed> $patch
+	 * @param array<string,mixed> $metadata
 	 */
 	private function __construct(
-		private readonly array $patch
+		private readonly array $patch,
+		private readonly array $metadata = []
 	) {}
 
 	/**
 	 * Creates a stage result without context changes.
+	 *
+	 * @param array<string,mixed> $metadata
 	 */
-	public static function none(): self {
-		return new self([]);
+	public static function none(array $metadata = []): self {
+		return new self([], $metadata);
 	}
 
 	/**
 	 * Creates a stage result containing context values to apply.
 	 *
 	 * @param array<string,mixed> $patch
+	 * @param array<string,mixed> $metadata
 	 */
-	public static function patch(array $patch): self {
-		return new self($patch);
+	public static function patch(array $patch, array $metadata = []): self {
+		return new self($patch, $metadata);
 	}
 
 	/**
@@ -58,6 +63,15 @@ final class AgentStageResult {
 	 */
 	public function getPatch(): array {
 		return $this->patch;
+	}
+
+	/**
+	 * Returns provider-neutral execution metadata for tracing and UIs.
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function getMetadata(): array {
+		return $this->metadata;
 	}
 
 	/**

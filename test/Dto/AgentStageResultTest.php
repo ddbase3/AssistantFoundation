@@ -12,6 +12,7 @@ final class AgentStageResultTest extends TestCase {
 
 		$this->assertTrue($result->isEmpty());
 		$this->assertSame([], $result->getPatch());
+		$this->assertSame([], $result->getMetadata());
 	}
 
 	public function testPatchPreservesContextValues(): void {
@@ -20,9 +21,11 @@ final class AgentStageResultTest extends TestCase {
 			'agent.iteration' => 2,
 		];
 
-		$result = AgentStageResult::patch($patch);
+		$metadata = ['budget' => ['can_continue' => true]];
+		$result = AgentStageResult::patch($patch, $metadata);
 
 		$this->assertFalse($result->isEmpty());
 		$this->assertSame($patch, $result->getPatch());
+		$this->assertSame($metadata, $result->getMetadata());
 	}
 }

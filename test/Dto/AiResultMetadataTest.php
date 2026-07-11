@@ -29,6 +29,25 @@ final class AiResultMetadataTest extends TestCase {
 		$this->assertSame(2, $merged->getMetrics()['output_images']);
 	}
 
+	public function testUsageCanBeRestoredFromNormalizedArray(): void {
+		$usage = AiUsage::fromArray([
+			'input_tokens' => 5,
+			'output_tokens' => '3',
+			'total_tokens' => 8,
+			'metrics' => [
+				'requests' => 1,
+				'invalid' => 'ignored'
+			],
+			'details' => ['source' => 'provider']
+		]);
+
+		$this->assertSame(5, $usage->getInputTokens());
+		$this->assertSame(3, $usage->getOutputTokens());
+		$this->assertSame(8, $usage->getTotalTokens());
+		$this->assertSame(['requests' => 1], $usage->getMetrics());
+		$this->assertSame('provider', $usage->getDetails()['source']);
+	}
+
 	public function testMetadataHasOneSharedShape(): void {
 		$metadata = new AiResultMetadata(
 			'chat',

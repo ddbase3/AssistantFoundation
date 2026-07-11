@@ -17,48 +17,41 @@
 
 namespace AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentStageResult;
+use AssistantFoundation\Dto\AgentAction;
+use AssistantFoundation\Dto\AgentActionDecision;
 use Base3\Api\IComponent;
 
 /**
- * Interface IAgentStage
+ * Interface IAgentActionPolicy
  *
- * Defines one configurable processing step in an agent pipeline.
- *
- * Stage implementations are discoverable BASE3 components. The static
- * getName() value identifies the implementation class, id() identifies one
- * configured runtime instance, and name() exposes the operational stage name.
+ * Defines one configured policy that evaluates a semantic agent action before
+ * the action is executed by the runtime.
  */
-interface IAgentStage extends IComponent {
+interface IAgentActionPolicy extends IComponent {
 
 	public const AI_USAGE_NONE = 'none';
 	public const AI_USAGE_CONDITIONAL = 'conditional';
 	public const AI_USAGE_REQUIRED = 'required';
 
 	/**
-	 * Returns the operational name of this stage.
+	 * Returns the operational policy name.
 	 */
 	public function name(): string;
 
 	/**
-	 * Returns a concise factual description of the stage responsibility.
+	 * Returns a concise factual description of the policy responsibility.
 	 */
 	public function getDescription(): string;
 
 	/**
-	 * Returns whether this stage uses AI.
+	 * Returns whether the policy uses AI.
 	 *
 	 * Allowed values are the AI_USAGE_* constants declared by this interface.
 	 */
 	public function getAiUsage(): string;
 
 	/**
-	 * Checks whether this stage should process the current agent context.
+	 * Evaluates one action and returns a provider-neutral decision.
 	 */
-	public function supports(IAgentContext $context): bool;
-
-	/**
-	 * Processes the current agent context and returns the resulting context patch.
-	 */
-	public function process(IAgentContext $context): AgentStageResult;
+	public function evaluate(AgentAction $action, IAgentContext $context): AgentActionDecision;
 }

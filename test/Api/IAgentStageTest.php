@@ -15,6 +15,8 @@ final class IAgentStageTest extends TestCase {
 
 	public function testStageContractContainsExpectedMethods(): void {
 		$this->assertTrue(method_exists(IAgentStage::class, 'name'));
+		$this->assertTrue(method_exists(IAgentStage::class, 'getDescription'));
+		$this->assertTrue(method_exists(IAgentStage::class, 'getAiUsage'));
 		$this->assertTrue(method_exists(IAgentStage::class, 'supports'));
 		$this->assertTrue(method_exists(IAgentStage::class, 'process'));
 
