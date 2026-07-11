@@ -103,6 +103,18 @@ final class AgentActionDecision {
 	}
 
 	/**
+	 * @param array<string,mixed> $data
+	 */
+	public static function fromArray(array $data): self {
+		return new self(
+			trim((string)($data['action_id'] ?? '')),
+			trim((string)($data['decision'] ?? '')),
+			trim((string)($data['reason'] ?? '')),
+			is_array($data['metadata'] ?? null) ? $data['metadata'] : []
+		);
+	}
+
+	/**
 	 * @return array<string,mixed>
 	 */
 	public function toArray(): array {

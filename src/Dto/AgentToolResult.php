@@ -139,6 +139,39 @@ final class AgentToolResult {
 	}
 
 	/**
+	 * @param array<string,mixed> $data
+	 */
+	public static function fromArray(array $data): self {
+		$status = trim((string)($data['status'] ?? ''));
+		$arguments = is_array($data['arguments'] ?? null) ? $data['arguments'] : [];
+		$metadata = is_array($data['metadata'] ?? null) ? $data['metadata'] : [];
+
+		if ($status === self::STATUS_SUCCESS) {
+			return self::success(
+				trim((string)($data['call_id'] ?? '')),
+				trim((string)($data['tool'] ?? '')),
+				$arguments,
+				$data['output'] ?? null,
+				$metadata
+			);
+		}
+
+		if ($status !== self::STATUS_FAILURE) {
+			throw new \InvalidArgumentException('Unsupported agent tool result status: ' . $status);
+		}
+
+		return self::failure(
+			trim((string)($data['call_id'] ?? '')),
+			trim((string)($data['tool'] ?? '')),
+			$arguments,
+			trim((string)($data['error_code'] ?? '')),
+			trim((string)($data['error_message'] ?? '')),
+			$metadata,
+			$data['output'] ?? null
+		);
+	}
+
+	/**
 	 * @return array<string,mixed>
 	 */
 	public function toArray(): array {

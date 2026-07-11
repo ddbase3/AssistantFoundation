@@ -56,6 +56,18 @@ final class AiToolCall {
 	}
 
 	/**
+	 * @param array<string,mixed> $data
+	 */
+	public static function fromArray(array $data): self {
+		return new self(
+			trim((string)($data['id'] ?? '')),
+			trim((string)($data['name'] ?? '')),
+			is_array($data['arguments'] ?? null) ? $data['arguments'] : [],
+			is_array($data['metadata'] ?? null) ? $data['metadata'] : []
+		);
+	}
+
+	/**
 	 * Returns the provider-neutral public representation.
 	 *
 	 * @return array<string,mixed>
