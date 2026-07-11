@@ -26,6 +26,7 @@ It does not contain implementations, storage logic, or UI elements. Instead, it 
 * **Memories** – storing and retrieving conversational or session history
 * **Nodes** – defining input/output structure and execution contracts
 * **Resources** – external services or tools connected to the agent system
+* **Capabilities & Modules** – configured provider bundles, module activation, bounded tool selection, and run-local stage mounts
 * **Config & Value Resolution** – consistent way to inject runtime configuration
 
 ---
@@ -62,6 +63,13 @@ AssistantFoundation/
          ├─ IAgentNode.php
          ├─ IAgentResource.php
          ├─ IAgentConfigValueResolver.php
+         ├─ IAgentCapabilityProvider.php
+         ├─ IAgentModule.php
+         └─ ...
+     └─ Dto/
+         ├─ AgentCapabilitySourceConfig.php
+         ├─ AgentModuleActivation.php
+         ├─ AgentStageMount.php
          └─ ...
 ```
 
