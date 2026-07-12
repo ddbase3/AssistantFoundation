@@ -32,7 +32,8 @@ final class AgentExecutionResult {
 	public function __construct(
 		private readonly array $output,
 		private readonly array $effectiveFlow = [],
-		private readonly array $warnings = []
+		private readonly array $warnings = [],
+		private readonly ?AgentResult $agentResult = null
 	) {}
 
 	/**
@@ -47,6 +48,10 @@ final class AgentExecutionResult {
 	 */
 	public function getEffectiveFlow(): array {
 		return $this->effectiveFlow;
+	}
+
+	public function getAgentResult(): ?AgentResult {
+		return $this->agentResult;
 	}
 
 	/**

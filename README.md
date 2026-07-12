@@ -22,8 +22,8 @@ This plugin is focused solely on **interfaces**.
 It does not contain implementations, storage logic, or UI elements. Instead, it defines the contracts for the following areas:
 
 * **Agents** – lifecycle, execution, and orchestration of assistant nodes
-* **Contexts** – passing state and variables across nodes and flows
-* **Memories** – storing and retrieving conversational or session history
+* **Contexts** – passing dynamic variables and optional typed run state across nodes and flows
+* **Memories & Context** – storing conversation history and contributing typed run-local instruction/context blocks
 * **Nodes** – defining input/output structure and execution contracts
 * **Resources** – external services or tools connected to the agent system
 * **Capabilities & Modules** – configured provider bundles, module activation, bounded tool selection, and run-local stage mounts
@@ -60,6 +60,8 @@ AssistantFoundation/
          ├─ IAgent.php
          ├─ IAgentContext.php
          ├─ IAgentMemory.php
+         ├─ IAgentConversationMemory.php
+         ├─ IAgentContextContributor.php
          ├─ IAgentNode.php
          ├─ IAgentResource.php
          ├─ IAgentConfigValueResolver.php
@@ -68,12 +70,30 @@ AssistantFoundation/
          └─ ...
      └─ Dto/
          ├─ AgentCapabilitySourceConfig.php
+         ├─ AgentInstructionBlock.php
+         ├─ AgentState.php
+         ├─ AgentResult.php
          ├─ AgentModuleActivation.php
          ├─ AgentStageMount.php
          └─ ...
 ```
 
 ---
+
+## Conversation memory and context contribution
+
+`IAgentMemory` remains the compatible chat-history API. Two explicit contracts clarify how implementations are used:
+
+* `IAgentConversationMemory` marks a memory that loads and receives visible dialog messages.
+* `IAgentContextContributor` returns typed `AgentInstructionBlock` values for a new agent turn and does not define chat-history writes.
+
+A configured component may implement other roles at the same time. For example, a user-preference component can implement `IAgentTool` and `IAgentContextContributor` while sharing one configuration and storage implementation.
+
+## Typed agent state and result
+
+AssistantFoundation provides transport-neutral state and result DTOs divided into task, plan, knowledge, execution, memory, context-window, budget, suspension, and result sections. Runtime-specific context extensions remain in the plugin that owns their lifecycle.
+
+`AgentResult` is transport-neutral and can represent completed, failed, partial, and suspended runs.
 
 ## License
 
