@@ -1,101 +1,81 @@
 # AssistantFoundation Plugin
 
-The **AssistantFoundation Plugin** provides the foundational API layer for all MissionBay and BASE3 components related to AI, chatbots, and agent-based systems. It defines a clean set of interfaces that act as contracts between different parts of the framework, ensuring modularity, stability, and consistent integration across plugins.
+AssistantFoundation is the shared contract and DTO plugin for AI, chat, embedding, vector-search, and agent integrations in BASE3.
 
----
+## Boundary
 
-## Purpose
+An interface belongs in AssistantFoundation only when another plugin is expected to provide, replace, or consume the contract without depending on MissionBay internals.
 
-In complex agent-driven systems, a clear separation between **API definitions** and their **implementations** is essential.
-The AssistantFoundation Plugin serves exactly this purpose:
+Typical reasons are:
 
-* Central place for all **interfaces** related to AI assistants, chatbots, and MissionBay workflows
-* Guarantees consistent **contracts** for developers implementing or extending functionality
-* Improves **maintainability** by avoiding circular dependencies between plugins
-* Provides a **stable surface** that other plugins or external systems can rely on
+- discoverable plugin extension points such as agent stages, action policies, modules, capability providers, context contributors, and conversation-memory backends;
+- replaceable runtime services such as capability selection, suspension storage, tool-result caching, task execution, and full agent execution;
+- provider-neutral adapter contracts for chat models, embedding models, AI providers, results, service tests, and vector search;
+- shared runtime contracts and DTOs exchanged by several plugins.
 
----
+MissionBay-only factories, profile resolvers, node/resource contracts, orchestration helpers, and internal state extensions belong in `MissionBay/Api`.
 
-## Scope
+## Contents
 
-This plugin is focused solely on **interfaces**.
-It does not contain implementations, storage logic, or UI elements. Instead, it defines the contracts for the following areas:
-
-* **Agents** – lifecycle, execution, and orchestration of assistant nodes
-* **Contexts** – passing dynamic variables and optional typed run state across nodes and flows
-* **Memories & Context** – storing conversation history and contributing typed run-local instruction/context blocks
-* **Nodes** – defining input/output structure and execution contracts
-* **Resources** – external services or tools connected to the agent system
-* **Capabilities & Modules** – configured provider bundles, module activation, bounded tool selection, and run-local stage mounts
-* **Config & Value Resolution** – consistent way to inject runtime configuration
-
----
-
-## Integration
-
-The AssistantFoundation Plugin is designed to be imported by other MissionBay/BASE3 plugins, such as:
-
-* **Chatbot** (Services)
-* **MissionBay** (execution engine and node definitions)
-
-By depending only on the interfaces in AssistantFoundation, these plugins remain decoupled from specific implementations.
-
----
-
-## Benefits
-
-* **Clear contracts**: Every service or node knows exactly what to expect
-* **Extensibility**: New nodes and resources can be added without breaking existing code
-* **Reusability**: Interfaces can be shared across multiple plugins or projects
-* **Future-proofing**: Stable API surface makes upgrades and refactoring easier
-
----
-
-## Example Structure
-
-```
+```text
 AssistantFoundation/
- └─ src/
-     └─ Api/
-         ├─ IAgent.php
-         ├─ IAgentContext.php
-         ├─ IAgentMemory.php
-         ├─ IAgentConversationMemory.php
-         ├─ IAgentContextContributor.php
-         ├─ IAgentNode.php
-         ├─ IAgentResource.php
-         ├─ IAgentConfigValueResolver.php
-         ├─ IAgentCapabilityProvider.php
-         ├─ IAgentModule.php
-         └─ ...
-     └─ Dto/
-         ├─ AgentCapabilitySourceConfig.php
-         ├─ AgentInstructionBlock.php
-         ├─ AgentState.php
-         ├─ AgentResult.php
-         ├─ AgentModuleActivation.php
-         ├─ AgentStageMount.php
-         └─ ...
+  src/Api/        shared plugin-to-plugin interfaces
+  src/Dto/        provider-neutral immutable data values
+  src/Exception/  shared exceptions for the public contracts
+  src/Display/    foundation-level service diagnostics
 ```
 
----
+AssistantFoundation intentionally contains no final project composition and no concrete storage/provider choice.
 
-## Conversation memory and context contribution
+## Current extension surfaces
 
-`IAgentMemory` remains the compatible chat-history API. Two explicit contracts clarify how implementations are used:
+### Agent runtime
 
-* `IAgentConversationMemory` marks a memory that loads and receives visible dialog messages.
-* `IAgentContextContributor` returns typed `AgentInstructionBlock` values for a new agent turn and does not define chat-history writes.
+- `IAgentActionPolicy`
+- `IAgentCapabilityProvider`
+- `IAgentCapabilitySelector`
+- `IAgentContext`
+- `IAgentContextContributor`
+- `IAgentConversationMemory`
+- `IAgentExecutionService`
+- `IAgentMemory`
+- `IAgentModule`
+- `IAgentStage`
+- `IAgentSuspensionRepository`
+- `IAgentToolResultCache`
 
-A configured component may implement other roles at the same time. For example, a user-preference component can implement `IAgentTool` and `IAgentContextContributor` while sharing one configuration and storage implementation.
+### AI and search adapters
 
-## Typed agent state and result
+- `IAiChatModel`
+- `IAiEmbeddingModel`
+- `IAiProvider`
+- `IAiResult`
+- `IAiServiceTester`
+- `IAiTaskService`
+- `IVectorSearch`
 
-AssistantFoundation provides transport-neutral state and result DTOs divided into task, plan, knowledge, execution, memory, context-window, budget, suspension, and result sections. Runtime-specific context extensions remain in the plugin that owns their lifecycle.
+Every retained interface is documented with ownership rationale, implementation requirements, example code, and registration guidance in:
 
-`AgentResult` is transport-neutral and can represent completed, failed, partial, and suspended runs.
+```text
+MissionBay/docs/ASSISTANTFOUNDATION_EXTENSION_POINTS.md
+```
+
+Adding another interface to `AssistantFoundation/src/Api` requires updating that document in the same change.
+
+## Conversation memory and context
+
+Conversation history and run-local system context are separate contracts:
+
+- `IAgentConversationMemory` loads and writes visible user/assistant messages.
+- `IAgentContextContributor` contributes typed `AgentInstructionBlock` values for a new turn and receives no conversation writes.
+- `IAgentMemory` remains the stable compatibility/base contract; new conversation stores should implement `IAgentConversationMemory`.
+
+The Knowledge / Skills component is an explicit tool and is not a conversation-memory or context-contributor contract.
+
+## Typed state and result
+
+AssistantFoundation provides provider-neutral `AgentState` and `AgentResult` DTOs. MissionBay-specific lifecycle access remains under `MissionBay\Api\IAgentStateContext` because it is not a plugin-to-plugin extension slot.
 
 ## License
 
-AssistantFoundation is licensed under the GPL 3.0 license
-
+GPL-3.0

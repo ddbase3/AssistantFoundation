@@ -17,13 +17,14 @@
 
 namespace AssistantFoundation\Dto;
 
-/** Transport-neutral resume input containing only an opaque handle and explicit responses. */
+/** Transport-neutral resume input containing an opaque handle and either explicit responses or natural-language input. */
 final class AgentResume {
 
 	/** @param array<int,AgentInteractionResponse> $responses */
 	public function __construct(
 		private readonly string $resumeHandle,
-		private readonly array $responses
+		private readonly array $responses = [],
+		private readonly string $responseText = ''
 	) {
 		if (trim($resumeHandle) === '') {
 			throw new \InvalidArgumentException('Agent resume handle must not be empty.');
@@ -38,16 +39,25 @@ final class AgentResume {
 	public function getResumeHandle(): string { return $this->resumeHandle; }
 	/** @return array<int,AgentInteractionResponse> */
 	public function getResponses(): array { return $this->responses; }
+	public function getResponseText(): string { return $this->responseText; }
+	public function hasExplicitResponses(): bool { return $this->responses !== []; }
+	public function hasResponseText(): bool { return trim($this->responseText) !== ''; }
 
 	/** @return array<string,mixed> */
 	public function toArray(): array {
-		return [
+		$result = [
 			'resume_handle' => $this->resumeHandle,
 			'responses' => array_map(
 				static fn(AgentInteractionResponse $response): array => $response->toArray(),
 				$this->responses
 			)
 		];
+
+		if ($this->responseText !== '') {
+			$result['response_text'] = $this->responseText;
+		}
+
+		return $result;
 	}
 
 	/** @param array<string,mixed> $data */
@@ -62,7 +72,8 @@ final class AgentResume {
 
 		return new self(
 			trim((string)($data['resume_handle'] ?? '')),
-			$responses
+			$responses,
+			trim((string)($data['response_text'] ?? $data['response'] ?? ''))
 		);
 	}
 }

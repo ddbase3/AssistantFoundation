@@ -24,6 +24,18 @@ final class AgentSuspensionTest extends TestCase {
 		$this->assertArrayNotHasKey('suspension', $restored->toArray());
 	}
 
+	public function testNaturalLanguageResumeRoundTripKeepsOpaqueHandleAndResponseText(): void {
+		$resume = new AgentResume(str_repeat('b', 43), [], 'jo hau rein');
+
+		$restored = AgentResume::fromArray($resume->toArray());
+
+		$this->assertSame(str_repeat('b', 43), $restored->getResumeHandle());
+		$this->assertSame([], $restored->getResponses());
+		$this->assertSame('jo hau rein', $restored->getResponseText());
+		$this->assertTrue($restored->hasResponseText());
+		$this->assertArrayNotHasKey('suspension', $restored->toArray());
+	}
+
 	public function testSuspensionRejectsNonAwaitingStatus(): void {
 		$this->expectException(\InvalidArgumentException::class);
 
