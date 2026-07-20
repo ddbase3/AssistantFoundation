@@ -23,6 +23,7 @@ namespace AssistantFoundation\Dto;
 final class AgentCapabilitySelectionConfig {
 
 	public const STRATEGY_HYBRID = 'hybrid';
+	public const STRATEGY_SEMANTIC = 'semantic';
 	public const STRATEGY_ALL = 'all';
 
 	/**
@@ -46,9 +47,11 @@ final class AgentCapabilitySelectionConfig {
 		private readonly array $includeCategories = [],
 		private readonly array $excludeCategories = [],
 		private readonly array $alwaysAvailable = [],
-		private readonly bool $sticky = true
+		private readonly bool $sticky = true,
+		private readonly int $semanticCandidateTools = 48,
+		private readonly int $semanticMaxPromptCharacters = 48000
 	) {
-		if (!in_array($this->strategy, [self::STRATEGY_HYBRID, self::STRATEGY_ALL], true)) {
+		if (!in_array($this->strategy, [self::STRATEGY_HYBRID, self::STRATEGY_SEMANTIC, self::STRATEGY_ALL], true)) {
 			throw new \InvalidArgumentException('Unsupported capability selection strategy: ' . $this->strategy);
 		}
 		if ($this->maxTools < 1 || $this->maxTools > 512) {
@@ -56,6 +59,15 @@ final class AgentCapabilitySelectionConfig {
 		}
 		if ($this->selectAllThreshold < 0 || $this->selectAllThreshold > 512) {
 			throw new \InvalidArgumentException('Capability selectAllThreshold must be between 0 and 512.');
+		}
+		if ($this->semanticCandidateTools < 1 || $this->semanticCandidateTools > 512) {
+			throw new \InvalidArgumentException('Capability semanticCandidateTools must be between 1 and 512.');
+		}
+		if ($this->strategy === self::STRATEGY_SEMANTIC && $this->semanticCandidateTools < $this->maxTools) {
+			throw new \InvalidArgumentException('Capability semanticCandidateTools must not be smaller than maxTools for semantic selection.');
+		}
+		if ($this->semanticMaxPromptCharacters < 8000 || $this->semanticMaxPromptCharacters > 200000) {
+			throw new \InvalidArgumentException('Capability semanticMaxPromptCharacters must be between 8000 and 200000.');
 		}
 	}
 
@@ -73,7 +85,9 @@ final class AgentCapabilitySelectionConfig {
 			includeCategories: self::strings($config['includeCategories'] ?? $config['include_categories'] ?? []),
 			excludeCategories: self::strings($config['excludeCategories'] ?? $config['exclude_categories'] ?? []),
 			alwaysAvailable: self::strings($config['alwaysAvailable'] ?? $config['always_available'] ?? []),
-			sticky: self::boolValue($config['sticky'] ?? true, true)
+			sticky: self::boolValue($config['sticky'] ?? true, true),
+			semanticCandidateTools: (int)($config['semanticCandidateTools'] ?? $config['semantic_candidate_tools'] ?? 48),
+			semanticMaxPromptCharacters: (int)($config['semanticMaxPromptCharacters'] ?? $config['semantic_max_prompt_characters'] ?? 48000)
 		);
 	}
 
@@ -91,7 +105,9 @@ final class AgentCapabilitySelectionConfig {
 			$this->includeCategories,
 			$this->excludeCategories,
 			array_values(array_unique(array_merge($this->alwaysAvailable, self::strings($toolNames)))),
-			$this->sticky
+			$this->sticky,
+			$this->semanticCandidateTools,
+			$this->semanticMaxPromptCharacters
 		);
 	}
 
@@ -107,6 +123,8 @@ final class AgentCapabilitySelectionConfig {
 	/** @return array<int,string> */ public function getExcludeCategories(): array { return $this->excludeCategories; }
 	/** @return array<int,string> */ public function getAlwaysAvailable(): array { return $this->alwaysAvailable; }
 	public function isSticky(): bool { return $this->sticky; }
+	public function getSemanticCandidateTools(): int { return $this->semanticCandidateTools; }
+	public function getSemanticMaxPromptCharacters(): int { return $this->semanticMaxPromptCharacters; }
 
 	/** @return array<string,mixed> */
 	public function toArray(): array {
@@ -122,7 +140,9 @@ final class AgentCapabilitySelectionConfig {
 			'include_categories' => $this->includeCategories,
 			'exclude_categories' => $this->excludeCategories,
 			'always_available' => $this->alwaysAvailable,
-			'sticky' => $this->sticky
+			'sticky' => $this->sticky,
+			'semantic_candidate_tools' => $this->semanticCandidateTools,
+			'semantic_max_prompt_characters' => $this->semanticMaxPromptCharacters
 		];
 	}
 

@@ -24,7 +24,10 @@ final class AgentCapabilityCatalogTest extends TestCase {
 			'selectAllThreshold' => 4,
 			'includeTags' => ['crm'],
 			'alwaysAvailable' => ['general_info'],
-			'sticky' => false
+			'sticky' => false,
+			'strategy' => 'semantic',
+			'semanticCandidateTools' => 32,
+			'semanticMaxPromptCharacters' => 24000
 		]);
 
 		$this->assertSame(8, $config->getMaxTools());
@@ -32,6 +35,9 @@ final class AgentCapabilityCatalogTest extends TestCase {
 		$this->assertSame(['crm'], $config->getIncludeTags());
 		$this->assertSame(['general_info'], $config->getAlwaysAvailable());
 		$this->assertFalse($config->isSticky());
+		$this->assertSame(AgentCapabilitySelectionConfig::STRATEGY_SEMANTIC, $config->getStrategy());
+		$this->assertSame(32, $config->getSemanticCandidateTools());
+		$this->assertSame(24000, $config->getSemanticMaxPromptCharacters());
 	}
 
 	private function capability(string $name): AgentCapability {

@@ -17,6 +17,8 @@
 
 namespace AssistantFoundation\Dto;
 
+use AssistantFoundation\Api\IAiChatModel;
+
 /**
  * Context supplied to a capability selector for one model decision.
  */
@@ -33,7 +35,8 @@ final class AgentCapabilitySelectionRequest {
 		private readonly AgentCapabilitySelectionConfig $config,
 		private readonly array $previousSelectedToolNames = [],
 		private readonly array $recentToolNames = [],
-		private readonly array $requiredToolNames = []
+		private readonly array $requiredToolNames = [],
+		private readonly ?IAiChatModel $model = null
 	) {}
 
 	public function getIteration(): int { return $this->iteration; }
@@ -42,4 +45,5 @@ final class AgentCapabilitySelectionRequest {
 	/** @return array<int,string> */ public function getPreviousSelectedToolNames(): array { return $this->previousSelectedToolNames; }
 	/** @return array<int,string> */ public function getRecentToolNames(): array { return $this->recentToolNames; }
 	/** @return array<int,string> */ public function getRequiredToolNames(): array { return $this->requiredToolNames; }
+	public function getModel(): ?IAiChatModel { return $this->model; }
 }

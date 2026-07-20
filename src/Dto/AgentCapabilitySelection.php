@@ -34,7 +34,8 @@ final class AgentCapabilitySelection {
 		private readonly int $eligibleSize,
 		private readonly array $capabilities,
 		private readonly array $scores = [],
-		private readonly array $reasons = []
+		private readonly array $reasons = [],
+		private readonly ?AiResultMetadata $modelMetadata = null
 	) {
 		$known = [];
 		foreach ($this->capabilities as $capability) {
@@ -55,6 +56,7 @@ final class AgentCapabilitySelection {
 	/** @return array<int,AgentCapability> */ public function getCapabilities(): array { return $this->capabilities; }
 	/** @return array<string,float> */ public function getScores(): array { return $this->scores; }
 	/** @return array<string,array<int,string>> */ public function getReasons(): array { return $this->reasons; }
+	public function getModelMetadata(): ?AiResultMetadata { return $this->modelMetadata; }
 
 	/** @return array<int,string> */
 	public function getToolNames(): array {
@@ -83,7 +85,7 @@ final class AgentCapabilitySelection {
 
 	/** @return array<string,mixed> */
 	public function toArray(): array {
-		return [
+		$result = [
 			'iteration' => $this->iteration,
 			'strategy' => $this->strategy,
 			'catalog_size' => $this->catalogSize,
@@ -93,5 +95,11 @@ final class AgentCapabilitySelection {
 			'scores' => $this->scores,
 			'reasons' => $this->reasons
 		];
+
+		if ($this->modelMetadata !== null) {
+			$result['model_metadata'] = $this->modelMetadata->toArray();
+		}
+
+		return $result;
 	}
 }
