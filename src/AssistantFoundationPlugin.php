@@ -3,9 +3,8 @@
 /***********************************************************************
  * This file is part of AssistantFoundation for BASE3 Framework.
  *
- * AssistantFoundation extends the BASE3 framework with a unified API
- * foundation for assistants, chatbots, and agent-based systems.
- * It provides shared interfaces for modular AI integration.
+ * AssistantFoundation provides shared contracts, DTOs, models and
+ * exceptions for assistant and agent integrations.
  *
  * Developed by Daniel Dahme
  * Licensed under GPL-3.0
@@ -24,16 +23,11 @@ class AssistantFoundationPlugin implements IPlugin {
 
 	public function __construct(private readonly IContainer $container) {}
 
-	// Implementation of IBase
-
 	public static function getName(): string {
 		return 'assistantfoundationplugin';
 	}
 
-	// Implementation of IPlugin
-
 	public function init() {
-		$this->container
-			->set(self::getName(), $this, IContainer::SHARED);
+		$this->container->set(self::getName(), $this, IContainer::SHARED | IContainer::NOOVERWRITE);
 	}
 }

@@ -17,21 +17,19 @@
 
 namespace AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentExecutionRequest;
-use AssistantFoundation\Dto\AgentExecutionResult;
 use Base3\Api\IBase;
 
-/**
- * Executes one agent request independently of HTTP transport and UI concerns.
- *
- * Implementations own agent configuration resolution and runtime execution.
- * Callers own request parsing, persistence, event transport and response
- * formatting. Incremental output is delivered through the optional event sink.
- */
-interface IAgentExecutionService extends IBase {
+interface IAgentRuntimeRegistry extends IBase {
 
-	public function execute(
-		AgentExecutionRequest $request,
-		?IAgentEventSink $eventSink = null
-	): AgentExecutionResult;
+	/** @return array<int,string> */
+	public function getRuntimeIds(): array;
+
+	/** @return array<int,array<string,mixed>> */
+	public function getRuntimeOptions(): array;
+
+	public function hasRuntime(string $runtimeId): bool;
+
+	public function getExecutionService(string $runtimeId): IAgentRuntimeService;
+
+	public function getConfigFormService(string $runtimeId): IAgentRuntimeConfigFormService;
 }

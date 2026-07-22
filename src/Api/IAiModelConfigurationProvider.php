@@ -17,21 +17,20 @@
 
 namespace AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentExecutionRequest;
-use AssistantFoundation\Dto\AgentExecutionResult;
+use AssistantFoundation\Dto\AiModelConfiguration;
 use Base3\Api\IBase;
 
 /**
- * Executes one agent request independently of HTTP transport and UI concerns.
- *
- * Implementations own agent configuration resolution and runtime execution.
- * Callers own request parsing, persistence, event transport and response
- * formatting. Incremental output is delivered through the optional event sink.
+ * Resolves configured language-model services independently of an agent runtime.
+ * Returned configurations contain the exact provider request endpoint, not an
+ * unresolved connection base URL.
  */
-interface IAgentExecutionService extends IBase {
+interface IAiModelConfigurationProvider extends IBase {
 
-	public function execute(
-		AgentExecutionRequest $request,
-		?IAgentEventSink $eventSink = null
-	): AgentExecutionResult;
+	/** @return array<int,array<string,mixed>> */
+	public function getOptions(): array;
+
+	public function has(string $id): bool;
+
+	public function get(string $id): AiModelConfiguration;
 }

@@ -19,7 +19,7 @@ class AssistantFoundationPluginTest extends TestCase {
 		$plugin->init();
 
 		$this->assertTrue($container->has(AssistantFoundationPlugin::getName()));
-		$this->assertSame(IContainer::SHARED, $container->getFlags(AssistantFoundationPlugin::getName()));
+		$this->assertSame(IContainer::SHARED | IContainer::NOOVERWRITE, $container->getFlags(AssistantFoundationPlugin::getName()));
 		$this->assertSame($plugin, $container->get(AssistantFoundationPlugin::getName()));
 	}
 

@@ -17,21 +17,19 @@
 
 namespace AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentExecutionRequest;
-use AssistantFoundation\Dto\AgentExecutionResult;
-use Base3\Api\IBase;
+use AssistantFoundation\Dto\AgentExecutionEvent;
 
 /**
- * Executes one agent request independently of HTTP transport and UI concerns.
+ * Transport-neutral receiver for incremental agent execution events.
  *
- * Implementations own agent configuration resolution and runtime execution.
- * Callers own request parsing, persistence, event transport and response
- * formatting. Incremental output is delivered through the optional event sink.
+ * Sinks are run-scoped objects. They may forward events to SSE, collect them
+ * for another transport, write diagnostics or discard them.
  */
-interface IAgentExecutionService extends IBase {
+interface IAgentEventSink {
 
-	public function execute(
-		AgentExecutionRequest $request,
-		?IAgentEventSink $eventSink = null
-	): AgentExecutionResult;
+	public const CONTEXT_KEY = 'agent_event_sink';
+
+	public function emit(AgentExecutionEvent $event): void;
+
+	public function isCancelled(): bool;
 }

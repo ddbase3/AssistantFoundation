@@ -18,31 +18,33 @@
 namespace AssistantFoundation\Dto;
 
 /**
- * Immutable terminal envelope for one agent execution.
+ * Immutable transport-neutral input for one agent execution.
  */
-final class AgentExecutionResult {
+final class AgentExecutionRequest {
 
 	/**
-	 * @param array<string,mixed> $output
-	 * @param array<int,string> $warnings
+	 * @param array<string,mixed> $agentConfiguration
+	 * @param array<string,mixed> $inputs
+	 * @param array<string,mixed> $context
 	 */
 	public function __construct(
-		private readonly array $output,
-		private readonly array $warnings = [],
-		private readonly ?AgentResult $agentResult = null
+		private readonly array $agentConfiguration,
+		private readonly array $inputs = [],
+		private readonly array $context = []
 	) {}
 
 	/** @return array<string,mixed> */
-	public function getOutput(): array {
-		return $this->output;
+	public function getAgentConfiguration(): array {
+		return $this->agentConfiguration;
 	}
 
-	/** @return array<int,string> */
-	public function getWarnings(): array {
-		return $this->warnings;
+	/** @return array<string,mixed> */
+	public function getInputs(): array {
+		return $this->inputs;
 	}
 
-	public function getAgentResult(): ?AgentResult {
-		return $this->agentResult;
+	/** @return array<string,mixed> */
+	public function getContext(): array {
+		return $this->context;
 	}
 }

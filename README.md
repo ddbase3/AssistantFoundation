@@ -22,10 +22,9 @@ AssistantFoundation/
   src/Api/        shared plugin-to-plugin interfaces
   src/Dto/        provider-neutral immutable data values
   src/Exception/  shared exceptions for the public contracts
-  src/Display/    foundation-level service diagnostics
 ```
 
-AssistantFoundation intentionally contains no final project composition and no concrete storage/provider choice.
+AssistantFoundation intentionally contains no displays, routers, registries, storage implementations, event-sink implementations, final project composition, or concrete provider choice. Shared concrete runtime composition belongs in `AssistantRuntime`.
 
 ## Current extension surfaces
 
@@ -37,6 +36,12 @@ AssistantFoundation intentionally contains no final project composition and no c
 - `IAgentContext`
 - `IAgentContextContributor`
 - `IAgentConversationMemory`
+- `IAgentConfigFormService`
+- `IAgentRuntimeConfigFormService`
+- `IAgentRuntimeRegistry`
+- `IAgentRuntimeSelector`
+- `IAgentRuntimeService`
+- `IAgentEventSink`
 - `IAgentExecutionService`
 - `IAgentMemory`
 - `IAgentModule`
@@ -79,3 +84,10 @@ AssistantFoundation provides provider-neutral `AgentState` and `AgentResult` DTO
 ## License
 
 GPL-3.0
+
+## Runtime composition
+
+The runtime contracts live here, but their concrete composition does not. The
+separate `AssistantRuntime` plugin provides runtime discovery, routing, shared
+configuration forms, event-sink helpers and diagnostics. Runtime plugins such
+as MissionBay and NeuronAi implement the contracts defined by this plugin.
