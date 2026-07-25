@@ -27,7 +27,9 @@ final class AgentCapabilityCatalogTest extends TestCase {
 			'sticky' => false,
 			'strategy' => 'semantic',
 			'semanticCandidateTools' => 32,
-			'semanticMaxPromptCharacters' => 24000
+			'semanticMaxPromptCharacters' => 24000,
+			'selectionUnit' => 'source',
+			'maxSources' => 5
 		]);
 
 		$this->assertSame(8, $config->getMaxTools());
@@ -38,6 +40,9 @@ final class AgentCapabilityCatalogTest extends TestCase {
 		$this->assertSame(AgentCapabilitySelectionConfig::STRATEGY_SEMANTIC, $config->getStrategy());
 		$this->assertSame(32, $config->getSemanticCandidateTools());
 		$this->assertSame(24000, $config->getSemanticMaxPromptCharacters());
+		$this->assertSame(AgentCapabilitySelectionConfig::SELECTION_UNIT_SOURCE, $config->getSelectionUnit());
+		$this->assertTrue($config->selectsSources());
+		$this->assertSame(5, $config->getMaxSources());
 	}
 
 	private function capability(string $name): AgentCapability {

@@ -26,6 +26,9 @@ final class AgentCapabilitySelectionConfig {
 	public const STRATEGY_SEMANTIC = 'semantic';
 	public const STRATEGY_ALL = 'all';
 
+	public const SELECTION_UNIT_FUNCTION = 'function';
+	public const SELECTION_UNIT_SOURCE = 'source';
+
 	/**
 	 * @param array<int,string> $includeTools
 	 * @param array<int,string> $excludeTools
@@ -49,13 +52,21 @@ final class AgentCapabilitySelectionConfig {
 		private readonly array $alwaysAvailable = [],
 		private readonly bool $sticky = true,
 		private readonly int $semanticCandidateTools = 48,
-		private readonly int $semanticMaxPromptCharacters = 48000
+		private readonly int $semanticMaxPromptCharacters = 48000,
+		private readonly string $selectionUnit = self::SELECTION_UNIT_FUNCTION,
+		private readonly int $maxSources = 8
 	) {
 		if (!in_array($this->strategy, [self::STRATEGY_HYBRID, self::STRATEGY_SEMANTIC, self::STRATEGY_ALL], true)) {
 			throw new \InvalidArgumentException('Unsupported capability selection strategy: ' . $this->strategy);
 		}
+		if (!in_array($this->selectionUnit, [self::SELECTION_UNIT_FUNCTION, self::SELECTION_UNIT_SOURCE], true)) {
+			throw new \InvalidArgumentException('Unsupported capability selection unit: ' . $this->selectionUnit);
+		}
 		if ($this->maxTools < 1 || $this->maxTools > 512) {
 			throw new \InvalidArgumentException('Capability maxTools must be between 1 and 512.');
+		}
+		if ($this->maxSources < 1 || $this->maxSources > 128) {
+			throw new \InvalidArgumentException('Capability maxSources must be between 1 and 128.');
 		}
 		if ($this->selectAllThreshold < 0 || $this->selectAllThreshold > 512) {
 			throw new \InvalidArgumentException('Capability selectAllThreshold must be between 0 and 512.');
@@ -87,7 +98,9 @@ final class AgentCapabilitySelectionConfig {
 			alwaysAvailable: self::strings($config['alwaysAvailable'] ?? $config['always_available'] ?? []),
 			sticky: self::boolValue($config['sticky'] ?? true, true),
 			semanticCandidateTools: (int)($config['semanticCandidateTools'] ?? $config['semantic_candidate_tools'] ?? 48),
-			semanticMaxPromptCharacters: (int)($config['semanticMaxPromptCharacters'] ?? $config['semantic_max_prompt_characters'] ?? 48000)
+			semanticMaxPromptCharacters: (int)($config['semanticMaxPromptCharacters'] ?? $config['semantic_max_prompt_characters'] ?? 48000),
+			selectionUnit: strtolower(trim((string)($config['selectionUnit'] ?? $config['selection_unit'] ?? self::SELECTION_UNIT_FUNCTION))),
+			maxSources: (int)($config['maxSources'] ?? $config['max_sources'] ?? 8)
 		);
 	}
 
@@ -107,7 +120,9 @@ final class AgentCapabilitySelectionConfig {
 			array_values(array_unique(array_merge($this->alwaysAvailable, self::strings($toolNames)))),
 			$this->sticky,
 			$this->semanticCandidateTools,
-			$this->semanticMaxPromptCharacters
+			$this->semanticMaxPromptCharacters,
+			$this->selectionUnit,
+			$this->maxSources
 		);
 	}
 
@@ -125,6 +140,9 @@ final class AgentCapabilitySelectionConfig {
 	public function isSticky(): bool { return $this->sticky; }
 	public function getSemanticCandidateTools(): int { return $this->semanticCandidateTools; }
 	public function getSemanticMaxPromptCharacters(): int { return $this->semanticMaxPromptCharacters; }
+	public function getSelectionUnit(): string { return $this->selectionUnit; }
+	public function getMaxSources(): int { return $this->maxSources; }
+	public function selectsSources(): bool { return $this->selectionUnit === self::SELECTION_UNIT_SOURCE; }
 
 	/** @return array<string,mixed> */
 	public function toArray(): array {
@@ -142,7 +160,9 @@ final class AgentCapabilitySelectionConfig {
 			'always_available' => $this->alwaysAvailable,
 			'sticky' => $this->sticky,
 			'semantic_candidate_tools' => $this->semanticCandidateTools,
-			'semantic_max_prompt_characters' => $this->semanticMaxPromptCharacters
+			'semantic_max_prompt_characters' => $this->semanticMaxPromptCharacters,
+			'selection_unit' => $this->selectionUnit,
+			'max_sources' => $this->maxSources
 		];
 	}
 

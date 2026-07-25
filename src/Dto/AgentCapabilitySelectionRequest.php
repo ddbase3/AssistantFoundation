@@ -28,6 +28,7 @@ final class AgentCapabilitySelectionRequest {
 	 * @param array<int,string> $previousSelectedToolNames
 	 * @param array<int,string> $recentToolNames
 	 * @param array<int,string> $requiredToolNames
+	 * @param array<int,array<string,mixed>> $messages
 	 */
 	public function __construct(
 		private readonly int $iteration,
@@ -36,7 +37,8 @@ final class AgentCapabilitySelectionRequest {
 		private readonly array $previousSelectedToolNames = [],
 		private readonly array $recentToolNames = [],
 		private readonly array $requiredToolNames = [],
-		private readonly ?IAiChatModel $model = null
+		private readonly ?IAiChatModel $model = null,
+		private readonly array $messages = []
 	) {}
 
 	public function getIteration(): int { return $this->iteration; }
@@ -46,4 +48,5 @@ final class AgentCapabilitySelectionRequest {
 	/** @return array<int,string> */ public function getRecentToolNames(): array { return $this->recentToolNames; }
 	/** @return array<int,string> */ public function getRequiredToolNames(): array { return $this->requiredToolNames; }
 	public function getModel(): ?IAiChatModel { return $this->model; }
+	/** @return array<int,array<string,mixed>> */ public function getMessages(): array { return $this->messages; }
 }
