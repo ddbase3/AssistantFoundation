@@ -91,3 +91,16 @@ The runtime contracts live here, but their concrete composition does not. The
 separate `AssistantRuntime` plugin provides runtime discovery, routing, shared
 configuration forms, event-sink helpers and diagnostics. Runtime plugins such
 as MissionBay and NeuronAi implement the contracts defined by this plugin.
+
+## Speech services
+
+AssistantFoundation defines provider-neutral speech slots for plugins that need
+transcription or synthesis without importing a concrete provider implementation:
+
+- `ISpeechToTextService` for complete audio transcription requests;
+- `IRealtimeSpeechToTextSessionService` for short-lived browser session creation;
+- `ITextToSpeechService` for audio synthesis requests.
+
+The realtime session contract deliberately returns transport metadata and an
+ephemeral client credential. Long-lived provider credentials remain in the
+implementation plugin and are never part of the Chatbot browser configuration.
