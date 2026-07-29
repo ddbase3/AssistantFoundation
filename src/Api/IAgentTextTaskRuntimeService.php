@@ -17,23 +17,10 @@
 
 namespace AssistantFoundation\Api;
 
-use Base3\Api\IBase;
+/**
+ * Runtime-specific implementation of isolated text tasks.
+ */
+interface IAgentTextTaskRuntimeService extends IAgentTextTaskService {
 
-interface IAgentRuntimeRegistry extends IBase {
-
-	/** @return array<int,string> */
-	public function getRuntimeIds(): array;
-
-	/** @return array<int,array<string,mixed>> */
-	public function getRuntimeOptions(): array;
-
-	public function hasRuntime(string $runtimeId): bool;
-
-	public function getExecutionService(string $runtimeId): IAgentRuntimeService;
-
-	public function getConfigFormService(string $runtimeId): IAgentRuntimeConfigFormService;
-
-	public function getConversationService(string $runtimeId): IAgentConversationRuntimeService;
-
-	public function getTextTaskService(string $runtimeId): IAgentTextTaskRuntimeService;
+	public static function getRuntimeId(): string;
 }

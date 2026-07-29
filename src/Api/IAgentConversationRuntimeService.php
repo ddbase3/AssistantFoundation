@@ -17,21 +17,10 @@
 
 namespace AssistantFoundation\Api;
 
-interface IAiTaskService {
+/**
+ * Runtime-specific implementation of conversation-memory access.
+ */
+interface IAgentConversationRuntimeService extends IAgentConversationService {
 
-	/**
-	 * Executes a simple AI task and returns the final assistant answer.
-	 *
-	 * The implementation is responsible for:
-	 * - creating the agent context
-	 * - creating and running the flow
-	 * - injecting the task inputs into the flow
-	 * - extracting the final assistant response
-	 *
-	 * @param string $systemPrompt Complete system instruction
-	 * @param string $userPrompt User task input
-	 * @param array $agentFlow AgentFlow configuration
-	 * @return string Final assistant response
-	 */
-	public function run(string $systemPrompt, string $userPrompt, array $agentFlow): string;
+	public static function getRuntimeId(): string;
 }

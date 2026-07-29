@@ -18,42 +18,53 @@
 namespace AssistantFoundation\Api;
 
 use AssistantFoundation\Dto\AgentConversation;
-use AssistantFoundation\Dto\AgentConversationScope;
+use AssistantFoundation\Dto\AgentConversationRequest;
+use AssistantFoundation\Dto\AgentConversationState;
+use Base3\Api\IBase;
 
 /**
- * Stores visible dialog history and conversation metadata.
- *
- * The bound scope defines the server-owned user identity, the logical agent
- * channel, and optionally the current conversation. Implementations must keep
- * every operation inside that scope.
+ * Runtime-neutral access to the configured conversation memory of an agent.
  */
-interface IAgentConversationMemory extends IAgentMemory {
+interface IAgentConversationService extends IBase {
 
-	public function bindConversationScope(AgentConversationScope $scope): void;
-
-	/** @return array<int,AgentConversation> */
-	public function listConversations(): array;
-
-	public function getConversation(string $conversationId): ?AgentConversation;
-
-	public function getActiveConversation(): ?AgentConversation;
+	public function getState(
+		AgentConversationRequest $request,
+		string $conversationId = ''
+	): AgentConversationState;
 
 	public function createConversation(
+		AgentConversationRequest $request,
 		?string $conversationId = null,
 		string $title = '',
 		string $titleSource = AgentConversation::TITLE_SOURCE_TEMPORARY,
 		string $openingMessage = ''
-	): AgentConversation;
+	): AgentConversationState;
 
-	public function activateConversation(string $conversationId): AgentConversation;
+	public function activateConversation(
+		AgentConversationRequest $request,
+		string $conversationId
+	): AgentConversationState;
 
 	public function renameConversation(
+		AgentConversationRequest $request,
 		string $conversationId,
 		string $title,
 		string $titleSource = AgentConversation::TITLE_SOURCE_MANUAL
-	): AgentConversation;
+	): AgentConversationState;
 
-	public function deleteConversation(string $conversationId): void;
+	public function deleteConversation(
+		AgentConversationRequest $request,
+		string $conversationId
+	): AgentConversationState;
 
-	public function touchConversation(string $conversationId): AgentConversation;
+	public function appendMessage(
+		AgentConversationRequest $request,
+		string $conversationId,
+		array $message
+	): AgentConversationState;
+
+	public function touchConversation(
+		AgentConversationRequest $request,
+		string $conversationId
+	): AgentConversationState;
 }

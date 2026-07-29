@@ -36,6 +36,7 @@ AssistantFoundation intentionally contains no displays, routers, registries, sto
 - `IAgentContext`
 - `IAgentContextContributor`
 - `IAgentConversationMemory`
+- `IAgentConversationService` / `IAgentConversationRuntimeService`
 - `IAgentConfigFormService`
 - `IAgentRuntimeConfigFormService`
 - `IAgentRuntimeRegistry`
@@ -43,6 +44,7 @@ AssistantFoundation intentionally contains no displays, routers, registries, sto
 - `IAgentRuntimeService`
 - `IAgentEventSink`
 - `IAgentExecutionService`
+- `IAgentTextTaskService` / `IAgentTextTaskRuntimeService`
 - `IAgentMemory`
 - `IAgentModule`
 - `IAgentStage`
@@ -56,7 +58,6 @@ AssistantFoundation intentionally contains no displays, routers, registries, sto
 - `IAiProvider`
 - `IAiResult`
 - `IAiServiceTester`
-- `IAiTaskService`
 - `IVectorSearch`
 
 Every retained interface is documented with ownership rationale, implementation requirements, example code, and registration guidance in:
@@ -69,9 +70,11 @@ Adding another interface to `AssistantFoundation/src/Api` requires updating that
 
 ## Conversation memory and context
 
-Conversation history and run-local system context are separate contracts:
+Conversation history, isolated text tasks, and run-local system context are separate contracts:
 
 - `IAgentConversationMemory` loads and writes visible user/assistant messages.
+- `IAgentConversationService` routes explicit list/create/activate/rename/delete operations to the configured runtime.
+- `IAgentTextTaskService` performs isolated model calls without conversation-memory writes or tool execution.
 - `IAgentContextContributor` contributes typed `AgentInstructionBlock` values for a new turn and receives no conversation writes.
 - `IAgentMemory` remains the stable compatibility/base contract; new conversation stores should implement `IAgentConversationMemory`.
 
