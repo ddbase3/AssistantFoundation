@@ -50,6 +50,8 @@ AssistantFoundation intentionally contains no displays, routers, registries, sto
 - `IAgentStage`
 - `IAgentSuspensionRepository`
 - `IAgentToolResultCache`
+- `IAssistantResponseExtension`
+- `IAssistantResponseExtensionExamples`
 
 ### AI and search adapters
 
