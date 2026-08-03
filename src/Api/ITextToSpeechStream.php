@@ -16,13 +16,14 @@
 
 namespace AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\TextToSpeechRequest;
-use AssistantFoundation\Dto\TextToSpeechResult;
+interface ITextToSpeechStream {
 
-interface ITextToSpeechService {
+	/**
+	 * @param array<string,mixed> $metadata
+	 */
+	public function start(string $mimeType, array $metadata = []): void;
 
-	public function synthesize(
-		TextToSpeechRequest $request,
-		ITextToSpeechStream $stream
-	): TextToSpeechResult;
+	public function write(string $audio): void;
+
+	public function isCancelled(): bool;
 }

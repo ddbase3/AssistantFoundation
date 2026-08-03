@@ -23,15 +23,10 @@ final class TextToSpeechResult {
 	 * @param array<string,mixed> $metadata
 	 */
 	public function __construct(
-		private readonly string $audio,
 		private readonly string $mimeType,
 		private readonly array $metadata = [],
 		private readonly mixed $raw = null
 	) {}
-
-	public function getAudio(): string {
-		return $this->audio;
-	}
 
 	public function getMimeType(): string {
 		return $this->mimeType;
