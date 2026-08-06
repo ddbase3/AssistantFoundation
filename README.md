@@ -57,18 +57,28 @@ AssistantFoundation intentionally contains no displays, routers, registries, sto
 
 - `IAiChatModel`
 - `IAiEmbeddingModel`
+- `IImageGenerationModel`
 - `IAiProvider`
+- `IServiceDriverDefinition`
+- `IConnectionDriverDefinition`
 - `IAiResult`
 - `IAiServiceTester`
 - `IVectorSearch`
+- `IConfigurableVectorSearch`
 
-Every retained interface is documented with ownership rationale, implementation requirements, example code, and registration guidance in:
+Provider and driver extension contracts are documented in:
+
+```text
+AssistantFoundation/docs/SERVICE_AND_CONNECTION_DRIVERS.md
+```
+
+The wider runtime extension audit remains documented in:
 
 ```text
 MissionBay/docs/ASSISTANTFOUNDATION_EXTENSION_POINTS.md
 ```
 
-Adding another interface to `AssistantFoundation/src/Api` requires updating that document in the same change.
+Adding another interface to `AssistantFoundation/src/Api` requires updating the relevant contract documentation in the same change.
 
 ## Conversation memory and context
 
