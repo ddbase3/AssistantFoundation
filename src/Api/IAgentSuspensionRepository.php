@@ -19,6 +19,7 @@ namespace AssistantFoundation\Api;
 
 use AssistantFoundation\Dto\AgentSuspension;
 use AssistantFoundation\Dto\AgentSuspensionClaim;
+use AssistantFoundation\Dto\AgentSuspensionState;
 
 /**
  * Stores server-owned agent suspensions behind opaque one-time handles.
@@ -30,6 +31,8 @@ use AssistantFoundation\Dto\AgentSuspensionClaim;
 interface IAgentSuspensionRepository {
 
 	public function create(AgentSuspension $suspension, int $ttlSeconds): string;
+
+	public function findPending(string $scopeId): ?AgentSuspensionState;
 
 	public function claim(string $resumeHandle): AgentSuspensionClaim;
 

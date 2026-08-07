@@ -63,9 +63,12 @@ final class AgentSuspensionTest extends TestCase {
 			AgentExecutionStatus::AWAITING_APPROVAL,
 			[$request],
 			['messages' => [['role' => 'user', 'content' => 'Update record 42.']]],
-			'2026-07-11T10:00:00+00:00'
+			'2026-07-11T10:00:00+00:00',
+			[],
+			'conversation:scope-1'
 		);
 
+		$this->assertSame('conversation:scope-1', $suspension->getScopeId());
 		$this->assertSame($suspension->toArray(), AgentSuspension::fromArray($suspension->toArray())->toArray());
 	}
 }

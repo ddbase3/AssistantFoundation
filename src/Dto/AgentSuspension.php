@@ -34,7 +34,8 @@ final class AgentSuspension {
 		private readonly array $requests,
 		private readonly array $state,
 		private readonly string $createdAt,
-		private readonly array $metadata = []
+		private readonly array $metadata = [],
+		private readonly string $scopeId = ''
 	) {
 		if (trim($id) === '') {
 			throw new \InvalidArgumentException('Agent suspension id must not be empty.');
@@ -61,6 +62,7 @@ final class AgentSuspension {
 	public function getCreatedAt(): string { return $this->createdAt; }
 	/** @return array<string,mixed> */
 	public function getMetadata(): array { return $this->metadata; }
+	public function getScopeId(): string { return $this->scopeId; }
 
 	/** @return array<string,mixed> */
 	public function toArray(): array {
@@ -73,7 +75,8 @@ final class AgentSuspension {
 			),
 			'state' => $this->state,
 			'created_at' => $this->createdAt,
-			'metadata' => $this->metadata
+			'metadata' => $this->metadata,
+			'scope_id' => $this->scopeId
 		];
 	}
 
@@ -93,7 +96,8 @@ final class AgentSuspension {
 			$requests,
 			is_array($data['state'] ?? null) ? $data['state'] : [],
 			trim((string)($data['created_at'] ?? gmdate('c'))),
-			is_array($data['metadata'] ?? null) ? $data['metadata'] : []
+			is_array($data['metadata'] ?? null) ? $data['metadata'] : [],
+			trim((string)($data['scope_id'] ?? ''))
 		);
 	}
 }
