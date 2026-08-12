@@ -65,6 +65,11 @@ AssistantFoundation intentionally contains no displays, routers, registries, sto
 - `IAiServiceTester`
 - `IVectorSearch`
 - `IConfigurableVectorSearch`
+- `IRetrievalIndex`
+- `IRetrievalCollectionDefinition`
+- `IRetrievalFilterProvider`
+- `IRetrievalIndexInspector`
+- `IPhoneticEncoder`
 
 Provider and driver extension contracts are documented in:
 
@@ -77,6 +82,18 @@ The wider runtime extension audit remains documented in:
 ```text
 MissionBay/docs/ASSISTANTFOUNDATION_EXTENSION_POINTS.md
 ```
+
+### Multi-representation retrieval and indexing
+
+The retrieval contracts separate generic search infrastructure from domain-owned collection semantics:
+
+- `IRetrievalIndex` is the storage and retrieval boundary for dense, sparse, phrase and context operations.
+- `IRetrievalCollectionDefinition` owns logical-to-physical collection mapping, index schema, payload schema, agent filter allowlists and agent-facing payload projection.
+- `IRetrievalFilterProvider` contributes mandatory server-side filters such as ACL constraints.
+- `IRetrievalIndexInspector` exposes read-only diagnostic point inspection without leaking backend APIs into admin displays.
+- `IPhoneticEncoder` is the discoverable algorithm slot for language/domain-specific phonetic encoders.
+
+Implementations belong in MissionBay or another implementation plugin. Domain-specific collection definitions belong in the consuming domain plugin.
 
 Adding another interface to `AssistantFoundation/src/Api` requires updating the relevant contract documentation in the same change.
 
