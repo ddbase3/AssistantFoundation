@@ -21,7 +21,19 @@ use AssistantFoundation\Dto\TextToSpeechResult;
 
 interface ITextToSpeechService {
 
-	public function synthesize(
+	/**
+	 * Synthesizes the complete audio payload before returning.
+	 */
+	public function synthesize(TextToSpeechRequest $request): TextToSpeechResult;
+
+	/**
+	 * Streams audio chunks while synthesis is running.
+	 *
+	 * Implementations must not buffer the complete audio payload solely to
+	 * populate the returned result. The stream is the authoritative audio
+	 * transport for this operation.
+	 */
+	public function stream(
 		TextToSpeechRequest $request,
 		ITextToSpeechStream $stream
 	): TextToSpeechResult;

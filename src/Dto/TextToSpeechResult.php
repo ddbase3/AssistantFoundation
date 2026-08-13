@@ -17,19 +17,33 @@
 
 namespace AssistantFoundation\Dto;
 
+use MediaFoundation\Api\IAudioMedia;
+
 final class TextToSpeechResult {
 
 	/**
+	 * Complete synthesis results carry $audio. Streaming results may leave
+	 * it null because audio is delivered through ITextToSpeechStream.
+	 *
 	 * @param array<string,mixed> $metadata
 	 */
 	public function __construct(
 		private readonly string $mimeType,
+		private readonly ?IAudioMedia $audio = null,
 		private readonly array $metadata = [],
 		private readonly mixed $raw = null
 	) {}
 
 	public function getMimeType(): string {
 		return $this->mimeType;
+	}
+
+	public function getAudio(): ?IAudioMedia {
+		return $this->audio;
+	}
+
+	public function hasAudio(): bool {
+		return $this->audio !== null;
 	}
 
 	/** @return array<string,mixed> */
