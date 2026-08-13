@@ -131,7 +131,21 @@ transcription or synthesis without importing a concrete provider implementation:
 
 - `ISpeechToTextService` for complete audio transcription requests;
 - `IRealtimeSpeechToTextSessionService` for short-lived browser session creation;
-- `ITextToSpeechService` for audio synthesis requests.
+- `ITextToSpeechService` for complete and streaming audio synthesis requests.
+
+`ITextToSpeechService::synthesize()` returns a complete `TextToSpeechResult` with
+a `MediaFoundation\Api\IAudioMedia` payload. `ITextToSpeechService::stream()`
+delivers incremental audio through `ITextToSpeechStream` and returns completion
+metadata without requiring the implementation to buffer the full audio again.
+Streaming is selected by the caller for each request; it is not a stored service
+configuration option. `TextToSpeechResult` therefore uses the shared
+`MediaFoundation` audio contract instead of defining a second binary-audio DTO in
+AssistantFoundation.
+
+Compatibility note: the previous streaming-only
+`synthesize(TextToSpeechRequest, ITextToSpeechStream)` signature is replaced by
+`synthesize(TextToSpeechRequest)` plus `stream(TextToSpeechRequest,
+ITextToSpeechStream)`. TTS was still experimental when this contract was corrected.
 
 The realtime session contract deliberately returns transport metadata and an
 ephemeral client credential. Long-lived provider credentials remain in the
