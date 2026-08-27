@@ -113,9 +113,10 @@ Profile build output is `AgentContextProfileResult`, which contains ordered `Age
 ```text
 create -> resume handle
 findPending by scope
+findAll by scope -> active and terminal interaction lifecycle
 claim handle -> claim token + suspension
 release on recoverable failure
-consume after successful completion
+consume after successful completion + terminal resolution
 ```
 
-The opaque handle is the client-facing reference. Full suspension state remains server-side.
+The opaque handle is the client-facing reference while the suspension is active. Full resume state remains server-side. Terminal lifecycle entries keep only the interaction information required to restore the user-visible history.

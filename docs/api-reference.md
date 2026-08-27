@@ -239,9 +239,10 @@ Source: `src/Api/IAgentSuspensionRepository.php`.
 
 * `create(AgentSuspension $suspension, int $ttlSeconds) : string`
 * `findPending(string $scopeId) : ?AgentSuspensionState`
+* `findAll(string $scopeId) : array`
 * `claim(string $resumeHandle) : AgentSuspensionClaim`
 * `release(AgentSuspensionClaim $claim) : void`
-* `consume(AgentSuspensionClaim $claim) : void`
+* `consume(AgentSuspensionClaim $claim, ?AgentSuspensionResolution $resolution = null) : void`
 
 ### `IAgentTextTaskRuntimeService`
 

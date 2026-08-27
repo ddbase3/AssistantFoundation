@@ -19,6 +19,7 @@ namespace AssistantFoundation\Api;
 
 use AssistantFoundation\Dto\AgentSuspension;
 use AssistantFoundation\Dto\AgentSuspensionClaim;
+use AssistantFoundation\Dto\AgentSuspensionResolution;
 use AssistantFoundation\Dto\AgentSuspensionState;
 
 /**
@@ -34,9 +35,15 @@ interface IAgentSuspensionRepository {
 
 	public function findPending(string $scopeId): ?AgentSuspensionState;
 
+	/** @return array<int,AgentSuspensionState> */
+	public function findAll(string $scopeId): array;
+
 	public function claim(string $resumeHandle): AgentSuspensionClaim;
 
 	public function release(AgentSuspensionClaim $claim): void;
 
-	public function consume(AgentSuspensionClaim $claim): void;
+	public function consume(
+		AgentSuspensionClaim $claim,
+		?AgentSuspensionResolution $resolution = null
+	): void;
 }

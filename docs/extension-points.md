@@ -744,10 +744,11 @@ Replace this repository when a project needs a durable backend for approval/inpu
 ### Requirements
 
 - `create()` returns an opaque, unguessable resume handle;
-- `findPending()` resolves the same canonical suspension record by its stable scope id without creating a second persisted copy or lookup state;
+- `findPending()` resolves the active suspension by its stable scope id;
+- `findAll()` returns the complete interaction lifecycle for that scope, including resolved and expired suspensions;
 - `claim()` provides an exclusive short-lived claim or throws the typed repository exception;
 - `release()` makes a non-consumed claim available again;
-- `consume()` atomically makes the suspension unusable;
+- `consume()` atomically makes the suspension unusable and may persist its terminal `AgentSuspensionResolution`;
 - enforce TTL and one-time consumption;
 - never expose serialized suspension data in the handle.
 
@@ -761,6 +762,7 @@ namespace ProjectAgent\Suspension;
 use AssistantFoundation\Api\IAgentSuspensionRepository;
 use AssistantFoundation\Dto\AgentSuspension;
 use AssistantFoundation\Dto\AgentSuspensionClaim;
+use AssistantFoundation\Dto\AgentSuspensionResolution;
 use AssistantFoundation\Dto\AgentSuspensionState;
 
 final class DatabaseSuspensionRepository implements IAgentSuspensionRepository {
@@ -772,8 +774,13 @@ final class DatabaseSuspensionRepository implements IAgentSuspensionRepository {
     }
 
     public function findPending(string $scopeId): ?AgentSuspensionState {
-        // Resolve the same canonical suspension record used by claim().
+        // Resolve the active suspension record used by claim().
         return null;
+    }
+
+    public function findAll(string $scopeId): array {
+        // Return active and terminal suspension lifecycle entries for the scope.
+        return [];
     }
 
     public function claim(string $resumeHandle): AgentSuspensionClaim {
@@ -785,8 +792,11 @@ final class DatabaseSuspensionRepository implements IAgentSuspensionRepository {
         // Release only when the claim token still matches.
     }
 
-    public function consume(AgentSuspensionClaim $claim): void {
-        // Atomically mark consumed and reject future claims.
+    public function consume(
+        AgentSuspensionClaim $claim,
+        ?AgentSuspensionResolution $resolution = null
+    ): void {
+        // Atomically mark consumed, persist the terminal resolution, and reject future claims.
     }
 
     private function loadClaim(string $resumeHandle): AgentSuspensionClaim {
