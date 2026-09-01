@@ -38,6 +38,8 @@ This is the central security boundary between stored technical metadata and mode
 
 A backend must not simply return all stored payload fields to an agent when `projectPayload()` defines a smaller projection.
 
+Each entry returned by `getAgentFilterSchema()` contains `type` and `operators`. A domain may also provide `description`, `value_description`, and `examples`. Generic retrieval tools can use this optional documentation to explain domain-specific identifiers and value shapes without importing domain field names. Each example contains `operator` and `value`.
+
 ## Mandatory filters
 
 `IRetrievalFilterProvider` contributes server-side filter constraints. These filters are additive to model/user requested filters.

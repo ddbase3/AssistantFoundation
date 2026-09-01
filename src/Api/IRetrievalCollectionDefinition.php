@@ -48,6 +48,11 @@ interface IRetrievalCollectionDefinition {
 	 * Returns fields and operators that callers may expose as user/agent filters.
 	 * Fields not listed here are not externally filterable.
 	 *
+	 * Each field definition must provide type and operators. Implementations may
+	 * additionally provide description, value_description, and examples so a
+	 * generic retrieval tool can explain domain-owned filter semantics without
+	 * knowing domain field names itself. Each example contains operator and value.
+	 *
 	 * @return array<string,array<string,mixed>>
 	 */
 	public function getAgentFilterSchema(string $collectionKey): array;
