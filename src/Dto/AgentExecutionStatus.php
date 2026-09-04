@@ -21,7 +21,7 @@ namespace AssistantFoundation\Dto;
  * AgentExecutionStatus
  *
  * Stable provider-neutral status values for agent runs that can complete,
- * fail, or pause for explicit user interaction.
+ * fail, be cancelled, or pause for explicit user interaction.
  */
 final class AgentExecutionStatus {
 
@@ -29,6 +29,7 @@ final class AgentExecutionStatus {
 	public const COMPLETED = 'completed';
 	public const FAILED = 'failed';
 	public const PARTIAL = 'partial';
+	public const CANCELLED = 'cancelled';
 	public const AWAITING_APPROVAL = 'awaiting_approval';
 	public const AWAITING_INPUT = 'awaiting_input';
 
@@ -48,6 +49,7 @@ final class AgentExecutionStatus {
 			self::COMPLETED,
 			self::FAILED,
 			self::PARTIAL,
+			self::CANCELLED,
 			self::AWAITING_APPROVAL,
 			self::AWAITING_INPUT
 		];

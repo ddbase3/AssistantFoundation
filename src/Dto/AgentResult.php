@@ -44,6 +44,7 @@ final class AgentResult {
 	public function isCompleted(): bool { return $this->status === AgentExecutionStatus::COMPLETED; }
 	public function isSuspended(): bool { return AgentExecutionStatus::isSuspended($this->status); }
 	public function isPartial(): bool { return $this->status === AgentExecutionStatus::PARTIAL; }
+	public function isCancelled(): bool { return $this->status === AgentExecutionStatus::CANCELLED; }
 	public function hasFailure(): bool {
 		return in_array($this->status, [AgentExecutionStatus::FAILED, AgentExecutionStatus::PARTIAL], true)
 			|| ($this->state->getResult()?->hasFailure() ?? false);

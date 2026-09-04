@@ -56,4 +56,14 @@ interface IAgentConversationMemory extends IAgentMemory {
 	public function deleteConversation(string $conversationId): void;
 
 	public function touchConversation(string $conversationId): AgentConversation;
+
+	/**
+	 * Merges metadata into one stored conversation message without changing
+	 * its id, role, or content.
+	 *
+	 * @param string $nodeId Node history identifier
+	 * @param string $messageId Stored message identifier
+	 * @param array<string,mixed> $metadata Metadata fields to merge
+	 */
+	public function updateNodeHistoryMessageMetadata(string $nodeId, string $messageId, array $metadata): bool;
 }
