@@ -182,6 +182,9 @@ flowchart LR
 
 ## Documentation
 
+* [FAQ](docs/faq.md)
+* [Privacy and data processing](PRIVACY.md)
+
 Start with:
 
 * [overview](docs/overview.md)
