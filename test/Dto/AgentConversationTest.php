@@ -18,6 +18,12 @@ final class AgentConversationTest extends TestCase {
 		$this->assertSame('conversation-one', $selected->getConversationId());
 	}
 
+	public function testScopeBuildsStableOwnerKeysForUsersAndSessions(): void {
+		$this->assertSame(hash('sha256', 'user:42'), AgentConversationScope::ownerKeyForUser(42));
+		$this->assertSame(hash('sha256', 'user:42'), AgentConversationScope::ownerKeyForUser('42'));
+		$this->assertSame(hash('sha256', 'session:session-one'), AgentConversationScope::ownerKeyForSession('session-one'));
+	}
+
 	public function testConversationRoundTripsCanonicalMetadata(): void {
 		$data = [
 			'id' => 'conversation-one',

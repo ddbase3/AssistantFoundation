@@ -24,8 +24,9 @@ use AssistantFoundation\Dto\AgentConversationScope;
  * Stores visible dialog history and conversation metadata.
  *
  * The bound scope defines the server-owned user identity, the logical agent
- * channel, and optionally the current conversation. Implementations must keep
- * every operation inside that scope.
+ * channel, and optionally the current conversation. Normal conversation operations
+ * stay inside that scope. Lifecycle cleanup may explicitly remove all conversations
+ * for one owner key or channel.
  */
 interface IAgentConversationMemory extends IAgentMemory {
 
@@ -54,6 +55,10 @@ interface IAgentConversationMemory extends IAgentMemory {
 	): AgentConversation;
 
 	public function deleteConversation(string $conversationId): void;
+
+	public function deleteConversationsByOwnerKey(string $ownerKey): void;
+
+	public function deleteConversationsByChannel(string $channelId): void;
 
 	public function touchConversation(string $conversationId): AgentConversation;
 

@@ -38,6 +38,24 @@ final class AgentConversationScope {
 		}
 	}
 
+	public static function ownerKeyForUser(int|string $userId): string {
+		$userId = trim((string)$userId);
+		if ($userId === '' || $userId === '0') {
+			throw new \InvalidArgumentException('Conversation owner requires a user identity.');
+		}
+
+		return hash('sha256', 'user:' . $userId);
+	}
+
+	public static function ownerKeyForSession(string $sessionId): string {
+		$sessionId = trim($sessionId);
+		if ($sessionId === '') {
+			throw new \InvalidArgumentException('Conversation owner requires a session identity.');
+		}
+
+		return hash('sha256', 'session:' . $sessionId);
+	}
+
 	public function getOwnerKey(): string {
 		return $this->ownerKey;
 	}
