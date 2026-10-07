@@ -1,0 +1,20 @@
+{
+	"manifestVersion": 1,
+	"name": "AssistantFoundation",
+	"namespace": "AssistantFoundation",
+	"version": "4.17.0",
+	"description": "Shared contracts for assistant, agent, AI service, retrieval, parser, speech, and response-extension integrations in BASE3.",
+	"license": "GPL-3.0-or-later",
+	"maintainers": [
+		{
+			"name": "Daniel Dahme",
+			"url": "https://www.base3.de",
+			"email": "info@base3.de"
+		}
+	],
+	"repository": "https://github.com/ddbase3/AssistantFoundation",
+	"dependencies": {
+		"Base3Framework": ">=4.10.0",
+		"MediaFoundation": ">=4.1.0"
+	}
+}
