@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 final class AgentConversationTest extends TestCase {
 
 	public function testScopeKeepsOwnerChannelAndConversationTogether(): void {
-		$scope = new AgentConversationScope(str_repeat('a', 64), 'chatbot-main');
+		$scope = new AgentConversationScope('user', '42', 'chatbot-main');
 		$selected = $scope->withConversationId('conversation-one');
 
 		$this->assertFalse($scope->hasConversationId());
@@ -18,10 +18,11 @@ final class AgentConversationTest extends TestCase {
 		$this->assertSame('conversation-one', $selected->getConversationId());
 	}
 
-	public function testScopeBuildsStableOwnerKeysForUsersAndSessions(): void {
-		$this->assertSame(hash('sha256', 'user:42'), AgentConversationScope::ownerKeyForUser(42));
-		$this->assertSame(hash('sha256', 'user:42'), AgentConversationScope::ownerKeyForUser('42'));
-		$this->assertSame(hash('sha256', 'session:session-one'), AgentConversationScope::ownerKeyForSession('session-one'));
+	public function testScopeKeepsNativeUsersAndOpaqueSessions(): void {
+		$this->assertSame('42', (new AgentConversationScope('user', '42', 'chatbot-main'))->getOwnerId());
+		$this->assertSame('0', (new AgentConversationScope('user', '0', 'chatbot-main'))->getOwnerId());
+		$this->assertSame('name-with-suffix ', (new AgentConversationScope('user', 'name-with-suffix ', 'chatbot-main'))->getOwnerId());
+		$this->assertSame(hash('sha256', 'session:session-one'), AgentConversationScope::ownerIdForSession('session-one'));
 	}
 
 	public function testConversationRoundTripsCanonicalMetadata(): void {
@@ -38,8 +39,8 @@ final class AgentConversationTest extends TestCase {
 		$this->assertSame($data, AgentConversation::fromArray($data)->toArray());
 	}
 
-	public function testScopeRejectsNonHashedOwnerIdentity(): void {
+	public function testScopeRejectsUnknownOwnerType(): void {
 		$this->expectException(\InvalidArgumentException::class);
-		new AgentConversationScope('user-42', 'chatbot-main');
+		new AgentConversationScope('unknown', '42', 'chatbot-main');
 	}
 }

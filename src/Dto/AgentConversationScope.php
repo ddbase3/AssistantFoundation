@@ -18,36 +18,55 @@
 namespace AssistantFoundation\Dto;
 
 /**
- * Immutable ownership and channel scope for conversation memory.
+ * Immutable typed owner and conversation scope.
+ *
+ * Native host user IDs remain verbatim; session owner IDs are opaque,
+ * SHA-256-derived identifiers, never raw session authentication tokens.
  */
 final class AgentConversationScope {
 
+	public const OWNER_USER = 'user';
+	public const OWNER_SESSION = 'session';
+
+	/**
+	 * @param string $ownerType Either user or session
+	 * @param string $ownerId Native host user ID or opaque session owner ID
+	 * @param string $channelId Logical conversation channel
+	 * @param string $conversationId Optional active conversation identifier
+	 * @throws \InvalidArgumentException For invalid ownership or identifiers
+	 */
 	public function __construct(
-		private readonly string $ownerKey,
+		private readonly string $ownerType,
+		private readonly string $ownerId,
 		private readonly string $channelId,
 		private readonly string $conversationId = ''
 	) {
-		if (preg_match('/^[a-f0-9]{64}$/', $this->ownerKey) !== 1) {
-			throw new \InvalidArgumentException('Conversation scope requires a SHA-256 owner key.');
+		if (!in_array($this->ownerType, [self::OWNER_USER, self::OWNER_SESSION], true)) {
+			throw new \InvalidArgumentException('Unknown conversation owner type.');
+		}
+		if (trim($this->ownerId) === '' || strlen($this->ownerId) > 191) {
+			throw new \InvalidArgumentException('Conversation scope requires a valid owner ID.');
+		}
+		if ($this->ownerType === self::OWNER_SESSION && preg_match('/^[a-f0-9]{64}$/', $this->ownerId) !== 1) {
+			throw new \InvalidArgumentException('Session scope requires an opaque owner ID.');
 		}
 		if (!$this->isTechnicalId($this->channelId, 191)) {
-			throw new \InvalidArgumentException('Conversation scope requires a valid channel id.');
+			throw new \InvalidArgumentException('Conversation scope requires a valid channel ID.');
 		}
 		if ($this->conversationId !== '' && !$this->isTechnicalId($this->conversationId, 100)) {
-			throw new \InvalidArgumentException('Conversation scope contains an invalid conversation id.');
+			throw new \InvalidArgumentException('Conversation scope contains an invalid conversation ID.');
 		}
 	}
 
-	public static function ownerKeyForUser(int|string $userId): string {
-		$userId = trim((string)$userId);
-		if ($userId === '' || $userId === '0') {
-			throw new \InvalidArgumentException('Conversation owner requires a user identity.');
-		}
-
-		return hash('sha256', 'user:' . $userId);
-	}
-
-	public static function ownerKeyForSession(string $sessionId): string {
+	/**
+	 * Derive an opaque session-scoped owner identifier without retaining
+	 * the session authentication token.
+	 *
+	 * @param string $sessionId Trusted non-empty session ID
+	 * @return string SHA-256 hex identifier compatible with existing session records
+	 * @throws \InvalidArgumentException When the session ID is empty
+	 */
+	public static function ownerIdForSession(string $sessionId): string {
 		$sessionId = trim($sessionId);
 		if ($sessionId === '') {
 			throw new \InvalidArgumentException('Conversation owner requires a session identity.');
@@ -56,41 +75,54 @@ final class AgentConversationScope {
 		return hash('sha256', 'session:' . $sessionId);
 	}
 
-	public function getOwnerKey(): string {
-		return $this->ownerKey;
+	/** @return string Canonical owner type: user or session */
+	public function getOwnerType(): string {
+		return $this->ownerType;
 	}
 
+	/** @return string Native user ID or opaque session owner ID */
+	public function getOwnerId(): string {
+		return $this->ownerId;
+	}
+
+	/** @return string Logical channel ID */
 	public function getChannelId(): string {
 		return $this->channelId;
 	}
 
+	/** @return string Active conversation ID, or empty when not selected */
 	public function getConversationId(): string {
 		return $this->conversationId;
 	}
 
+	/** @return bool Whether an active conversation ID was selected */
 	public function hasConversationId(): bool {
 		return $this->conversationId !== '';
 	}
 
+	/**
+	 * Return a new scope with the same owner and channel and a new conversation.
+	 *
+	 * @param string $conversationId Technical conversation ID, or empty to clear it
+	 * @return self The new scope without mutating this instance
+	 * @throws \InvalidArgumentException When the ID is invalid
+	 */
 	public function withConversationId(string $conversationId): self {
-		return new self($this->ownerKey, $this->channelId, $conversationId);
+		return new self($this->ownerType, $this->ownerId, $this->channelId, $conversationId);
 	}
 
-	/** @return array<string,string> */
+	/** @return array<string,string> Typed owner and conversation identifiers */
 	public function toArray(): array {
 		return [
-			'owner_key' => $this->ownerKey,
+			'owner_type' => $this->ownerType,
+			'owner_id' => $this->ownerId,
 			'channel_id' => $this->channelId,
 			'conversation_id' => $this->conversationId
 		];
 	}
 
 	private function isTechnicalId(string $value, int $maxLength): bool {
-		$value = trim($value);
-		if ($value === '' || strlen($value) > $maxLength) {
-			return false;
-		}
-
-		return preg_match('/^[A-Za-z0-9._:-]+$/', $value) === 1;
+		return $value !== '' && strlen($value) <= $maxLength
+			&& preg_match('/^[A-Za-z0-9._:-]+$/', $value) === 1;
 	}
 }
