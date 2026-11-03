@@ -65,7 +65,7 @@ interface IAiChatModel {
 		array $messages,
 		array $tools,
 		callable $onData,
-		callable $onMeta = null
+		?callable $onMeta = null
 	): AiChatResult;
 
 	/**
@@ -81,7 +81,7 @@ interface IAiChatModel {
 	 * @param callable $onMeta  function(array $meta) : void    // optional metadata
 	 * @return void
 	 */
-	public function stream( array $messages, array $tools, callable $onData, callable $onMeta = null): void;
+	public function stream( array $messages, array $tools, callable $onData, ?callable $onMeta = null): void;
 
 	/**
 	 * Sets options like model, temperature, etc.
