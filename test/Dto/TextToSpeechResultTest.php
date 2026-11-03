@@ -9,27 +9,12 @@ use PHPUnit\Framework\TestCase;
 final class TextToSpeechResultTest extends TestCase {
 
 	public function testCompleteResultCarriesAudioMedia(): void {
-		$audio = new class implements IAudioMedia {
-			public function getMimeType(): string {
-				return 'audio/mpeg';
-			}
-
-			public function getSize(): int {
-				return 4;
-			}
-
-			public function getData(): string {
-				return 'test';
-			}
-
-			public function getDuration(): float {
-				return 0.0;
-			}
-
-			public function getBitrate(): int {
-				return 0;
-			}
-		};
+		if (!interface_exists(IAudioMedia::class)) {
+			$this->markTestSkipped('This DTO contract test requires the declared MediaFoundation plugin.');
+		}
+		$audio = $this->createStub(IAudioMedia::class);
+		$audio->method('getMimeType')->willReturn('audio/mpeg');
+		$audio->method('getData')->willReturn('test');
 
 		$result = new TextToSpeechResult('audio/mpeg', $audio, ['provider' => 'test']);
 
