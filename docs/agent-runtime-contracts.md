@@ -120,3 +120,29 @@ consume after successful completion + terminal resolution
 ```
 
 The opaque handle is the client-facing reference while the suspension is active. Full resume state remains server-side. Terminal lifecycle entries keep only the interaction information required to restore the user-visible history.
+
+## Source-defined agents and editable configurations
+
+`IAgentDefinition` is a classmap-discoverable contract. Any BASE3 plugin can
+publish one or more code-owned agents by implementing it. Every implementation
+has a unique classmap `getName()`, a globally unique fixed `getId()`, a stable
+fixed `getLabel()` and editable `getDefaultSettings()`. The definition never
+writes to SettingsStore and must not implement a second execution runtime.
+
+`IAgentConfigurationService` is the one consumer-facing contract for agent
+configuration. In the standard `agent` group it resolves stored records and
+all discovered definitions together. A defined agent exists without a stored
+record. The implementation must preserve existing saved configuration, force
+only the code-owned identity label, prevent deletion, and permit updates to
+all other settings. It must reject duplicate definition IDs and must not
+silently repair malformed stored fixed-agent records.
+
+Consumers resolve an agent with `getAgent($id)` or list through `getAgents()`.
+To edit use `saveAgent($id, $settings)`; deletion is permitted only for
+non-fixed agents. `isFixed($id)` lets UIs display immutable identity fields.
+Custom SettingsStore groups passed to the read methods do not inherit the
+`agent` group's code-owned declarations. Authorization remains the caller's
+responsibility and execution continues through `IAgentExecutionService`.
+
+Definitions are project or domain code. They are not a replacement for
+configurable orchestrator profiles, model presets or memory implementations.

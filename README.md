@@ -215,3 +215,12 @@ GPL-3.0.
 ## Typed conversation ownership (contract revision)
 
 `AgentConversationScope` now carries `owner_type` (`user` or `session`) and `owner_id` rather than only an opaque owner hash. For authenticated owners, `owner_id` is the unchanged host-native ID provided through BASE3 `IUsermanager`; for session owners, the DTO provides `ownerIdForSession()` which derives an opaque identifier rather than retaining the authentication token. The `IAgentConversationMemory` lifecycle method is now `deleteConversationsByOwner(ownerType, ownerId)`; implementations and host deletion adapters must update together. Normal conversation use remains limited to the authenticated/current-session scope; authorized deletion of a previously deleted user's records does not depend on a current login. The storage policy, migration and encryption are implemented by plugins such as MissionBay, not by this Foundation.
+
+
+### Discoverable fixed agent definitions
+
+`IAgentDefinition` lets any plugin declare stable agent identities by classmap.
+`IAgentConfigurationService` resolves these identities together with the
+ordinary editable `agent` SettingsStore records. Implementations own storage
+and configuration management; agent execution remains behind
+`IAgentExecutionService`. See [agent runtime contracts](docs/agent-runtime-contracts.md).

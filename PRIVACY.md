@@ -265,3 +265,15 @@ This document describes AssistantFoundation only. The component supplies stable 
 ## Conversation owner identity contract (2026-10 update)
 
 `AgentConversationScope` now exposes a typed owner (`user` or `session`) and a stable `owner_id`. For users, the ID is the native host identifier supplied by an adapter and is **personal data** when it relates to an identifiable account. Session owner IDs are SHA-256-derived from the runtime session identifier but remain linkable pseudonymous data, not anonymous by definition. The DTO must not carry a raw session authentication token as the owner ID. The Foundation neither stores these identifiers nor retains conversation content itself. Implementations must enforce owner isolation, authorized data-subject deletion and proper lifecycle cleanup. `IAgentConversationMemory::deleteConversationsByOwner()` explicitly supports deletion using a known native user ID even after the native account is deleted. Host adapter behavior, database retention, backup deletion and any encryption remain implementation/deployment concerns.
+
+
+## Class-defined agent configuration contracts
+
+`IAgentDefinition` and `IAgentConfigurationService` specify identities and
+editable configuration only. AssistantFoundation itself does not discover,
+store, execute, authorize or transmit agents. A code-owned default is not
+automatically persisted. Concrete providers must not hardcode credentials or
+personal information into default settings. The active storage implementation,
+executing plugin and host are responsible for authorization, data minimization,
+retention and deletion of persisted agent settings and conversations. No new
+storage, recipient or retention interval is introduced in AssistantFoundation.
