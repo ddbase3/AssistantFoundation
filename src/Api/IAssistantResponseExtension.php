@@ -14,10 +14,10 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AssistantResponseClientPlugin;
-use Base3\Api\IComponent;
+use Base3\AssistantFoundation\Dto\AssistantResponseClientPlugin;
+use Base3\CoreFoundation\Api\IComponent;
 
 /**
  * Adds one optional output capability to assistant responses.

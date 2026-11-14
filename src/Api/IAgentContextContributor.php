@@ -15,10 +15,10 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentInstructionBlock;
-use Base3\Api\IComponent;
+use Base3\AssistantFoundation\Dto\AgentInstructionBlock;
+use Base3\CoreFoundation\Api\IComponent;
 
 /**
  * Provides run-local instruction/context blocks for an agent turn.

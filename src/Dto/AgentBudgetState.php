@@ -15,7 +15,7 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Dto;
+namespace Base3\AssistantFoundation\Dto;
 
 /**
  * Configured run budget and recorded budget checkpoints.

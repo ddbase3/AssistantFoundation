@@ -15,9 +15,9 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Dto;
+namespace Base3\AssistantFoundation\Dto;
 
-use MediaFoundation\Api\IAudioMedia;
+use Base3\MediaFoundation\Api\IAudioMedia;
 
 final class TextToSpeechResult {
 

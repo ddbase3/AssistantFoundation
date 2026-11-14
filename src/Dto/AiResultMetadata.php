@@ -15,7 +15,7 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Dto;
+namespace Base3\AssistantFoundation\Dto;
 
 /**
  * Shared metadata envelope for chat, embedding, image, search, and future

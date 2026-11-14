@@ -15,11 +15,11 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentInteractionResponse;
-use AssistantFoundation\Dto\AgentSuspension;
-use AssistantFoundation\Dto\AgentToolResult;
+use Base3\AssistantFoundation\Dto\AgentInteractionResponse;
+use Base3\AssistantFoundation\Dto\AgentSuspension;
+use Base3\AssistantFoundation\Dto\AgentToolResult;
 
 /**
  * Optional extension for tool sets that can suspend mutating calls for an

@@ -15,7 +15,7 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Exception;
+namespace Base3\AssistantFoundation\Exception;
 
 final class AgentSuspensionRepositoryException extends \RuntimeException {
 

@@ -15,7 +15,7 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
 /**
  * Read-only diagnostic access to stored retrieval points.

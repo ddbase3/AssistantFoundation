@@ -14,7 +14,7 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Dto;
+namespace Base3\AssistantFoundation\Dto;
 
 /**
  * One normalized semantic block inside a parsed document.

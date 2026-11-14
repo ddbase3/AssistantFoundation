@@ -15,7 +15,7 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Dto;
+namespace Base3\AssistantFoundation\Dto;
 
 /**
  * Normalized model-facing capability metadata for one callable function.

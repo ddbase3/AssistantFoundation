@@ -36,13 +36,13 @@ AssistantFoundation extension points use three registration models.
 
 ### Discoverable configured components
 
-Interfaces extending `Base3\Api\IComponent` are resolved as configured instances through `IComponentResolver`. The implementation class is discoverable through `IClassMap`; a project or implementation plugin contributes a `ComponentDefinition` for each configured instance.
+Interfaces extending `Base3\CoreFoundation\Api\IComponent` are resolved as configured instances through `IComponentResolver`. The implementation class is discoverable through `IClassMap`; a project or implementation plugin contributes a `ComponentDefinition` for each configured instance.
 
 ```php
 <?php declare(strict_types=1);
 
-use Base3\Core\ComponentDefinition;
-use AssistantFoundation\Api\IAgentStage;
+use Base3\CoreFoundation\Dto\ComponentDefinition;
+use Base3\AssistantFoundation\Api\IAgentStage;
 
 $definition = new ComponentDefinition(
     id: 'project-stage',
@@ -63,8 +63,8 @@ Service interfaces that do not extend `IComponent` are replaced through the BASE
 ```php
 <?php declare(strict_types=1);
 
-use Base3\Api\IContainer;
-use AssistantFoundation\Api\IAgentCapabilitySelector;
+use Base3\CoreFoundation\Api\IContainer;
+use Base3\AssistantFoundation\Api\IAgentCapabilitySelector;
 
 $container->set(
     IAgentCapabilitySelector::class,
@@ -81,35 +81,35 @@ Model, provider, result, memory, and vector contracts are normally implemented b
 
 | Interface | Foundation reason | Extension mechanism | Reference implementation |
 |---|---|---|---|
-| `IAgentActionPolicy` | project plugins may add semantic action policies | configured component | `MissionBay\Policy\MutationApprovalAgentActionPolicy` |
+| `IAgentActionPolicy` | project plugins may add semantic action policies | configured component | `Base3\MissionBay\Policy\MutationApprovalAgentActionPolicy` |
 | `IAgentCapabilityProvider` | plugins may contribute capability bundles | configured component | test example in `AgentCapabilityDiscoveryServiceTest` |
-| `IAgentCapabilitySelector` | projects may replace tool-selection strategy | container service | `MissionBay\Capability\HybridAgentCapabilitySelector` |
-| `IAgentContext` | shared run context used by external stages, modules, memories, and tools | direct contract/factory | `MissionBay\Agent\AgentContext` |
-| `IAgentContextContributor` | plugins may add system-context sources | configured component | `MissionBay\Resource\AgentMemory\Time\TimeMemoryAgentResource` |
-| `IAgentConversationMemory` | plugins may add conversation-history backends | resource/direct contract | `MissionBay\Resource\SessionMemoryAgentResource` |
-| `IAgentConversationService` | plugins manage conversations without depending on runtime internals | container service | `AssistantRuntime\Service\RoutingAgentConversationService` |
-| `IAgentConversationRuntimeService` | runtimes expose their conversation-memory implementation | class-map runtime capability | `MissionBay\Service\AgentConversationService` |
-| `IAgentConfigFormService` | host UIs can embed runtime-specific agent configuration without importing the runtime plugin | container service | `MissionBay\Service\AgentConfigFormService` |
-| `IAgentEventSink` | runtimes emit incremental output without knowing HTTP, SSE, jobs, or UI implementations | run-scoped adapter | `Chatbot\Service\EventStreamAgentEventSink` |
-| `IAgentExecutionService` | other plugins execute configured agents without depending on MissionBay internals | container service | `MissionBay\Service\AgentExecutionService` |
-| `IAgentTextTaskService` | plugins execute isolated model-only tasks | container service | `AssistantRuntime\Service\RoutingAgentTextTaskService` |
-| `IAgentTextTaskRuntimeService` | runtimes provide isolated model-only task execution | class-map runtime capability | `MissionBay\Service\AgentTextTaskService` |
-| `IAgentMemory` | provider-neutral node-history base contract | direct contract | `MissionBay\Memory\NoMemory` |
+| `IAgentCapabilitySelector` | projects may replace tool-selection strategy | container service | `Base3\MissionBay\Capability\HybridAgentCapabilitySelector` |
+| `IAgentContext` | shared run context used by external stages, modules, memories, and tools | direct contract/factory | `Base3\MissionBay\Agent\AgentContext` |
+| `IAgentContextContributor` | plugins may add system-context sources | configured component | `Base3\MissionBay\Resource\AgentMemory\Time\TimeMemoryAgentResource` |
+| `IAgentConversationMemory` | plugins may add conversation-history backends | resource/direct contract | `Base3\MissionBay\Resource\SessionMemoryAgentResource` |
+| `IAgentConversationService` | plugins manage conversations without depending on runtime internals | container service | `Base3\AssistantRuntime\Service\RoutingAgentConversationService` |
+| `IAgentConversationRuntimeService` | runtimes expose their conversation-memory implementation | class-map runtime capability | `Base3\MissionBay\Service\AgentConversationService` |
+| `IAgentConfigFormService` | host UIs can embed runtime-specific agent configuration without importing the runtime plugin | container service | `Base3\MissionBay\Service\AgentConfigFormService` |
+| `IAgentEventSink` | runtimes emit incremental output without knowing HTTP, SSE, jobs, or UI implementations | run-scoped adapter | `Base3\Chatbot\Service\EventStreamAgentEventSink` |
+| `IAgentExecutionService` | other plugins execute configured agents without depending on MissionBay internals | container service | `Base3\MissionBay\Service\AgentExecutionService` |
+| `IAgentTextTaskService` | plugins execute isolated model-only tasks | container service | `Base3\AssistantRuntime\Service\RoutingAgentTextTaskService` |
+| `IAgentTextTaskRuntimeService` | runtimes provide isolated model-only task execution | class-map runtime capability | `Base3\MissionBay\Service\AgentTextTaskService` |
+| `IAgentMemory` | provider-neutral node-history base contract | direct contract | `Base3\MissionBay\Memory\NoMemory` |
 | `IAgentModule` | plugins may activate run-local instruction/capability bundles | configured component | test example in `AgentCapabilityDiscoveryServiceTest` |
-| `IAgentStage` | plugins may add semantic pipeline stages | configured component | `MissionBay\Orchestrator\Stage\AgentCapabilityDiscoveryStage` |
-| `IAgentSuspensionRepository` | projects may replace durable suspension storage | container service | `AssistantRuntime\Service\StateStoreAgentSuspensionRepository` |
-| `IAgentToolResultCache` | projects may replace tool-result cache storage | container service | `MissionBay\Cache\StateStoreAgentToolResultCache` |
-| `IAiChatModel` | plugins may provide chat-model adapters | direct adapter/resource | `MissionBay\Resource\ConfiguredChatModelAgentResource` |
-| `IAiEmbeddingModel` | plugins may provide embedding adapters | direct adapter/resource | `MissionBay\Resource\ConfiguredEmbeddingModelAgentResource` |
-| `IImageGenerationModel` | plugins may provide image-generation adapters without importing MissionBay APIs | direct adapter/resource | `MissionBay\Resource\ConfiguredImageModelAgentResource` |
-| `IAiProvider` | plugins may provide transport/provider implementations | direct adapter | `MissionBay\Transport\OpenAiCompatibleTransport` |
-| `IServiceDriverDefinition` | specialty plugins may contribute configured service drivers for every provider/service type | class-map discovery | `MissionBay\ServiceDriver\OpenAiChatServiceDriverDefinition` |
-| `IConnectionDriverDefinition` | specialty plugins may contribute connection protocols and connection-only schemas | class-map discovery | `MissionBay\ConnectionDriver\HttpConnectionDriverDefinition` |
-| `IAiResult` | plugins may add provider-neutral result DTOs | result contract | `AssistantFoundation\Dto\AiChatResult` |
-| `IAiServiceTester` | plugins may add service health tests | class-map discovery | `AssistantRuntime\Display\AiServiceDashboardDisplay` consumer |
-| `IVectorSearch` | plugins may provide vector-search backends | direct adapter/resource | `MissionBay\Resource\QdrantVectorSearch` |
+| `IAgentStage` | plugins may add semantic pipeline stages | configured component | `Base3\MissionBay\Orchestrator\Stage\AgentCapabilityDiscoveryStage` |
+| `IAgentSuspensionRepository` | projects may replace durable suspension storage | container service | `Base3\AssistantRuntime\Service\StateStoreAgentSuspensionRepository` |
+| `IAgentToolResultCache` | projects may replace tool-result cache storage | container service | `Base3\MissionBay\Cache\StateStoreAgentToolResultCache` |
+| `IAiChatModel` | plugins may provide chat-model adapters | direct adapter/resource | `Base3\MissionBay\Resource\ConfiguredChatModelAgentResource` |
+| `IAiEmbeddingModel` | plugins may provide embedding adapters | direct adapter/resource | `Base3\MissionBay\Resource\ConfiguredEmbeddingModelAgentResource` |
+| `IImageGenerationModel` | plugins may provide image-generation adapters without importing MissionBay APIs | direct adapter/resource | `Base3\MissionBay\Resource\ConfiguredImageModelAgentResource` |
+| `IAiProvider` | plugins may provide transport/provider implementations | direct adapter | `Base3\MissionBay\Transport\OpenAiCompatibleTransport` |
+| `IServiceDriverDefinition` | specialty plugins may contribute configured service drivers for every provider/service type | class-map discovery | `Base3\MissionBay\ServiceDriver\OpenAiChatServiceDriverDefinition` |
+| `IConnectionDriverDefinition` | specialty plugins may contribute connection protocols and connection-only schemas | class-map discovery | `Base3\MissionBay\ConnectionDriver\HttpConnectionDriverDefinition` |
+| `IAiResult` | plugins may add provider-neutral result DTOs | result contract | `Base3\AssistantFoundation\Dto\AiChatResult` |
+| `IAiServiceTester` | plugins may add service health tests | class-map discovery | `Base3\AssistantRuntime\Display\AiServiceDashboardDisplay` consumer |
+| `IVectorSearch` | plugins may provide vector-search backends | direct adapter/resource | `Base3\MissionBay\Resource\QdrantVectorSearch` |
 
-No MissionBay-only interface remains in AssistantFoundation after this audit. `MissionBay\Api\IAgentStateContext` is the explicit example of a contract that was moved because its lifecycle is owned only by MissionBay.
+No MissionBay-only interface remains in AssistantFoundation after this audit. `Base3\MissionBay\Api\IAgentStateContext` is the explicit example of a contract that was moved because its lifecycle is owned only by MissionBay.
 
 ## `IAgentActionPolicy`
 
@@ -133,10 +133,10 @@ Implement this interface when another plugin must allow, deny, require approval 
 
 namespace ProjectAgent\Policy;
 
-use AssistantFoundation\Api\IAgentActionPolicy;
-use AssistantFoundation\Api\IAgentContext;
-use AssistantFoundation\Dto\AgentAction;
-use AssistantFoundation\Dto\AgentActionDecision;
+use Base3\AssistantFoundation\Api\IAgentActionPolicy;
+use Base3\AssistantFoundation\Api\IAgentContext;
+use Base3\AssistantFoundation\Dto\AgentAction;
+use Base3\AssistantFoundation\Dto\AgentActionDecision;
 
 final class ReadOnlyActionPolicy implements IAgentActionPolicy {
 
@@ -197,8 +197,8 @@ Implement this interface when a plugin contributes a configured bundle of tools,
 
 namespace ProjectAgent\Capability;
 
-use AssistantFoundation\Api\IAgentCapabilityProvider;
-use AssistantFoundation\Api\IAgentContext;
+use Base3\AssistantFoundation\Api\IAgentCapabilityProvider;
+use Base3\AssistantFoundation\Api\IAgentContext;
 
 final class SupportCapabilityProvider implements IAgentCapabilityProvider {
 
@@ -258,10 +258,10 @@ Replace this service when a project needs a different deterministic strategy for
 
 namespace ProjectAgent\Capability;
 
-use AssistantFoundation\Api\IAgentCapabilitySelector;
-use AssistantFoundation\Dto\AgentCapabilityCatalog;
-use AssistantFoundation\Dto\AgentCapabilitySelection;
-use AssistantFoundation\Dto\AgentCapabilitySelectionRequest;
+use Base3\AssistantFoundation\Api\IAgentCapabilitySelector;
+use Base3\AssistantFoundation\Dto\AgentCapabilityCatalog;
+use Base3\AssistantFoundation\Dto\AgentCapabilitySelection;
+use Base3\AssistantFoundation\Dto\AgentCapabilitySelectionRequest;
 
 final class AllEligibleCapabilitySelector implements IAgentCapabilitySelector {
 
@@ -326,8 +326,8 @@ Implement this interface only when a plugin needs a complete alternative executi
 
 namespace ProjectAgent\Runtime;
 
-use AssistantFoundation\Api\IAgentContext;
-use AssistantFoundation\Api\IAgentMemory;
+use Base3\AssistantFoundation\Api\IAgentContext;
+use Base3\AssistantFoundation\Api\IAgentMemory;
 
 final class ProjectAgentContext implements IAgentContext {
 
@@ -365,7 +365,7 @@ final class ProjectAgentContext implements IAgentContext {
 }
 ```
 
-A project that replaces the context should also replace the MissionBay context factory in its final project composition. Typed MissionBay-only state access uses `MissionBay\Api\IAgentStateContext`, not another Foundation interface.
+A project that replaces the context should also replace the MissionBay context factory in its final project composition. Typed MissionBay-only state access uses `Base3\MissionBay\Api\IAgentStateContext`, not another Foundation interface.
 
 ## `IAgentContextContributor`
 
@@ -390,9 +390,9 @@ It is not conversation history and must not receive user/assistant message write
 
 namespace ProjectAgent\Context;
 
-use AssistantFoundation\Api\IAgentContext;
-use AssistantFoundation\Api\IAgentContextContributor;
-use AssistantFoundation\Dto\AgentInstructionBlock;
+use Base3\AssistantFoundation\Api\IAgentContext;
+use Base3\AssistantFoundation\Api\IAgentContextContributor;
+use Base3\AssistantFoundation\Dto\AgentInstructionBlock;
 
 final class TenantContextContributor implements IAgentContextContributor {
 
@@ -453,9 +453,9 @@ deletion, and touch operations in addition to the inherited node-history API.
 
 namespace ProjectAgent\Memory;
 
-use AssistantFoundation\Api\IAgentConversationMemory;
-use AssistantFoundation\Dto\AgentConversation;
-use AssistantFoundation\Dto\AgentConversationScope;
+use Base3\AssistantFoundation\Api\IAgentConversationMemory;
+use Base3\AssistantFoundation\Dto\AgentConversation;
+use Base3\AssistantFoundation\Dto\AgentConversationScope;
 
 final class ProjectConversationMemory implements IAgentConversationMemory {
 
@@ -540,8 +540,8 @@ REST and streaming callers use the same `execute()` operation. Incremental event
 
 namespace ProjectAgent\Job;
 
-use AssistantFoundation\Api\IAgentExecutionService;
-use AssistantFoundation\Dto\AgentExecutionRequest;
+use Base3\AssistantFoundation\Api\IAgentExecutionService;
+use Base3\AssistantFoundation\Dto\AgentExecutionRequest;
 
 final class ScheduledAgentRunner {
 
@@ -612,7 +612,7 @@ This is the provider-neutral base contract for node history. A component is a se
 
 ### Example
 
-`MissionBay\Memory\NoMemory` is the no-op base implementation. The canonical conversation implementations are `MissionBay\Resource\SessionMemoryAgentResource` and `MissionBay\Resource\DatabaseMemoryAgentResource`.
+`Base3\MissionBay\Memory\NoMemory` is the no-op base implementation. The canonical conversation implementations are `Base3\MissionBay\Resource\SessionMemoryAgentResource` and `Base3\MissionBay\Resource\DatabaseMemoryAgentResource`.
 
 ## `IAgentModule`
 
@@ -634,10 +634,10 @@ Implement an Agent Module when a plugin needs one activatable run-local bundle c
 
 namespace ProjectAgent\Module;
 
-use AssistantFoundation\Api\IAgentContext;
-use AssistantFoundation\Api\IAgentModule;
-use AssistantFoundation\Dto\AgentModuleActivation;
-use AssistantFoundation\Dto\AgentModuleManifest;
+use Base3\AssistantFoundation\Api\IAgentContext;
+use Base3\AssistantFoundation\Api\IAgentModule;
+use Base3\AssistantFoundation\Dto\AgentModuleActivation;
+use Base3\AssistantFoundation\Dto\AgentModuleManifest;
 
 final class CodingRulesModule implements IAgentModule {
 
@@ -693,9 +693,9 @@ Implement a stage when a plugin adds a genuine semantic step to the orchestrator
 
 namespace ProjectAgent\Stage;
 
-use AssistantFoundation\Api\IAgentContext;
-use AssistantFoundation\Api\IAgentStage;
-use AssistantFoundation\Dto\AgentStageResult;
+use Base3\AssistantFoundation\Api\IAgentContext;
+use Base3\AssistantFoundation\Api\IAgentStage;
+use Base3\AssistantFoundation\Dto\AgentStageResult;
 
 final class EvidenceMarkerStage implements IAgentStage {
 
@@ -759,11 +759,11 @@ Replace this repository when a project needs a durable backend for approval/inpu
 
 namespace ProjectAgent\Suspension;
 
-use AssistantFoundation\Api\IAgentSuspensionRepository;
-use AssistantFoundation\Dto\AgentSuspension;
-use AssistantFoundation\Dto\AgentSuspensionClaim;
-use AssistantFoundation\Dto\AgentSuspensionResolution;
-use AssistantFoundation\Dto\AgentSuspensionState;
+use Base3\AssistantFoundation\Api\IAgentSuspensionRepository;
+use Base3\AssistantFoundation\Dto\AgentSuspension;
+use Base3\AssistantFoundation\Dto\AgentSuspensionClaim;
+use Base3\AssistantFoundation\Dto\AgentSuspensionResolution;
+use Base3\AssistantFoundation\Dto\AgentSuspensionState;
 
 final class DatabaseSuspensionRepository implements IAgentSuspensionRepository {
 
@@ -830,8 +830,8 @@ Replace this service when a project needs a cache backend other than the default
 
 namespace ProjectAgent\Cache;
 
-use AssistantFoundation\Api\IAgentToolResultCache;
-use AssistantFoundation\Dto\AgentToolCacheEntry;
+use Base3\AssistantFoundation\Api\IAgentToolResultCache;
+use Base3\AssistantFoundation\Dto\AgentToolCacheEntry;
 
 final class ArrayToolResultCache implements IAgentToolResultCache {
 
@@ -881,9 +881,9 @@ Implement this interface for a provider-neutral chat completion adapter. The mod
 
 namespace ProjectAi\Model;
 
-use AssistantFoundation\Api\IAiChatModel;
-use AssistantFoundation\Dto\AiChatResult;
-use AssistantFoundation\Dto\AiResultMetadata;
+use Base3\AssistantFoundation\Api\IAiChatModel;
+use Base3\AssistantFoundation\Dto\AiChatResult;
+use Base3\AssistantFoundation\Dto\AiResultMetadata;
 
 final class ProjectChatModel implements IAiChatModel {
 
@@ -969,9 +969,9 @@ Implement this interface for an embedding provider or proxy.
 
 namespace ProjectAi\Model;
 
-use AssistantFoundation\Api\IAiEmbeddingModel;
-use AssistantFoundation\Dto\AiEmbeddingResult;
-use AssistantFoundation\Dto\AiResultMetadata;
+use Base3\AssistantFoundation\Api\IAiEmbeddingModel;
+use Base3\AssistantFoundation\Dto\AiEmbeddingResult;
+use Base3\AssistantFoundation\Dto\AiResultMetadata;
 
 final class ProjectEmbeddingModel implements IAiEmbeddingModel {
 
@@ -1021,8 +1021,8 @@ Implement this interface for a provider-neutral image-generation adapter that ca
 
 namespace ProjectAi\Image;
 
-use AssistantFoundation\Api\IImageGenerationModel;
-use AssistantFoundation\Dto\AiImageResult;
+use Base3\AssistantFoundation\Api\IImageGenerationModel;
+use Base3\AssistantFoundation\Dto\AiImageResult;
 
 final class ProjectImageModel implements IImageGenerationModel {
 
@@ -1111,7 +1111,7 @@ Implement this interface for a reusable low-level provider transport shared by c
 
 namespace ProjectAi\Transport;
 
-use AssistantFoundation\Api\IAiProvider;
+use Base3\AssistantFoundation\Api\IAiProvider;
 
 final class ProjectHttpProvider implements IAiProvider {
 
@@ -1162,8 +1162,8 @@ Implement this interface when a plugin introduces another provider-neutral AI re
 
 namespace ProjectAi\Dto;
 
-use AssistantFoundation\Api\IAiResult;
-use AssistantFoundation\Dto\AiResultMetadata;
+use Base3\AssistantFoundation\Api\IAiResult;
+use Base3\AssistantFoundation\Dto\AiResultMetadata;
 
 final class AiAudioResult implements IAiResult {
 
@@ -1217,7 +1217,7 @@ Implement this interface when a plugin contributes a quick administrative health
 
 namespace ProjectAi\Test;
 
-use AssistantFoundation\Api\IAiServiceTester;
+use Base3\AssistantFoundation\Api\IAiServiceTester;
 
 final class ProjectAiServiceTester implements IAiServiceTester {
 
@@ -1260,7 +1260,7 @@ Implement this interface for a read-only similarity-search backend used by plugi
 
 namespace ProjectAi\Vector;
 
-use AssistantFoundation\Api\IVectorSearch;
+use Base3\AssistantFoundation\Api\IVectorSearch;
 
 final class ArrayVectorSearch implements IVectorSearch {
 
@@ -1357,7 +1357,7 @@ Use this service when a consumer provides text and expects synthesized audio. A
 single configured service supports both execution styles:
 
 - `synthesize()` performs a complete request and returns a `TextToSpeechResult`
-  carrying the generated `MediaFoundation\Api\IAudioMedia`;
+  carrying the generated `Base3\MediaFoundation\Api\IAudioMedia`;
 - `stream()` delivers incremental audio through `ITextToSpeechStream` and returns
   completion metadata without requiring the implementation to buffer the complete
   audio payload again.

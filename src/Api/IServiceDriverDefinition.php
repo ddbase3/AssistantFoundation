@@ -14,9 +14,9 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use Base3\Api\IBase;
+use Base3\CoreFoundation\Api\IBase;
 
 /**
  * Describes one discoverable service driver.

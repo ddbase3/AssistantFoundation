@@ -15,10 +15,10 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AiModelConfiguration;
-use Base3\Api\IBase;
+use Base3\AssistantFoundation\Dto\AiModelConfiguration;
+use Base3\CoreFoundation\Api\IBase;
 
 /**
  * Resolves configured language-model services independently of an agent runtime.

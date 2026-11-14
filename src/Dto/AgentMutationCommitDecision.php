@@ -15,7 +15,7 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Dto;
+namespace Base3\AssistantFoundation\Dto;
 
 /** Provider-neutral result of the final mutation check immediately before commit. */
 final class AgentMutationCommitDecision {

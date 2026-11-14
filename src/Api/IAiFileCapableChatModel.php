@@ -15,11 +15,11 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AiFileResource;
-use AssistantFoundation\Dto\AiProviderFileMetadata;
-use AssistantFoundation\Dto\AiProviderFileReference;
+use Base3\AssistantFoundation\Dto\AiFileResource;
+use Base3\AssistantFoundation\Dto\AiProviderFileMetadata;
+use Base3\AssistantFoundation\Dto\AiProviderFileReference;
 
 interface IAiFileCapableChatModel extends IAiChatModel {
 

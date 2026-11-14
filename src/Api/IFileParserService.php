@@ -14,11 +14,11 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\ParserFileRequest;
-use AssistantFoundation\Dto\ParserServiceResult;
-use Base3\Api\IBase;
+use Base3\AssistantFoundation\Dto\ParserFileRequest;
+use Base3\AssistantFoundation\Dto\ParserServiceResult;
+use Base3\CoreFoundation\Api\IBase;
 
 /**
  * Shared contract for parser services that accept concrete files.

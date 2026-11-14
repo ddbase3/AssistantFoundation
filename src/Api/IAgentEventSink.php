@@ -15,9 +15,9 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentExecutionEvent;
+use Base3\AssistantFoundation\Dto\AgentExecutionEvent;
 
 /**
  * Transport-neutral receiver for incremental agent execution events.

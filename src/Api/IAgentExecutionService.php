@@ -15,11 +15,11 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentExecutionRequest;
-use AssistantFoundation\Dto\AgentExecutionResult;
-use Base3\Api\IBase;
+use Base3\AssistantFoundation\Dto\AgentExecutionRequest;
+use Base3\AssistantFoundation\Dto\AgentExecutionResult;
+use Base3\CoreFoundation\Api\IBase;
 
 /**
  * Executes one agent request independently of HTTP transport and UI concerns.

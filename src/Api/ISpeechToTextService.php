@@ -14,10 +14,10 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\SpeechToTextRequest;
-use AssistantFoundation\Dto\SpeechToTextResult;
+use Base3\AssistantFoundation\Dto\SpeechToTextRequest;
+use Base3\AssistantFoundation\Dto\SpeechToTextResult;
 
 interface ISpeechToTextService {
 

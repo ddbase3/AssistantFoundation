@@ -15,10 +15,10 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentCapabilityCatalog;
-use AssistantFoundation\Dto\AgentToolResult;
+use Base3\AssistantFoundation\Dto\AgentCapabilityCatalog;
+use Base3\AssistantFoundation\Dto\AgentToolResult;
 
 /**
  * Run-local, runtime-neutral tool set resolved from configured profiles.

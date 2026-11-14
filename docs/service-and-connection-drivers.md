@@ -7,13 +7,13 @@ AssistantFoundation owns the discoverable contracts used to contribute provider 
 The shared contracts are:
 
 ```text
-AssistantFoundation\Api\IServiceDriverDefinition
-AssistantFoundation\Api\IConnectionDriverDefinition
-AssistantFoundation\Api\IImageGenerationModel
-AssistantFoundation\Api\IAiChatModel
-AssistantFoundation\Api\IAiEmbeddingModel
-AssistantFoundation\Api\IAiProvider
-AssistantFoundation\Api\IConfigurableVectorSearch
+Base3\AssistantFoundation\Api\IServiceDriverDefinition
+Base3\AssistantFoundation\Api\IConnectionDriverDefinition
+Base3\AssistantFoundation\Api\IImageGenerationModel
+Base3\AssistantFoundation\Api\IAiChatModel
+Base3\AssistantFoundation\Api\IAiEmbeddingModel
+Base3\AssistantFoundation\Api\IAiProvider
+Base3\AssistantFoundation\Api\IConfigurableVectorSearch
 ```
 
 AssistantFoundation defines the extension boundary. It does not select final providers, store connection credentials, render administration forms, or contain concrete HTTP implementations.
@@ -44,8 +44,8 @@ Example:
 
 namespace ExampleImageProvider\ServiceDriver;
 
-use AssistantFoundation\Api\IImageGenerationModel;
-use AssistantFoundation\Api\IServiceDriverDefinition;
+use Base3\AssistantFoundation\Api\IImageGenerationModel;
+use Base3\AssistantFoundation\Api\IServiceDriverDefinition;
 use ExampleImageProvider\ImageModel\ExampleImageModel;
 
 final class ExampleImageServiceDriverDefinition implements IServiceDriverDefinition {

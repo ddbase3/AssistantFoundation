@@ -15,12 +15,12 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentSuspension;
-use AssistantFoundation\Dto\AgentSuspensionClaim;
-use AssistantFoundation\Dto\AgentSuspensionResolution;
-use AssistantFoundation\Dto\AgentSuspensionState;
+use Base3\AssistantFoundation\Dto\AgentSuspension;
+use Base3\AssistantFoundation\Dto\AgentSuspensionClaim;
+use Base3\AssistantFoundation\Dto\AgentSuspensionResolution;
+use Base3\AssistantFoundation\Dto\AgentSuspensionState;
 
 /**
  * Stores server-owned agent suspensions behind opaque one-time handles.

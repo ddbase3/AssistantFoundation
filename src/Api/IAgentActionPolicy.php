@@ -15,11 +15,11 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentAction;
-use AssistantFoundation\Dto\AgentActionDecision;
-use Base3\Api\IComponent;
+use Base3\AssistantFoundation\Dto\AgentAction;
+use Base3\AssistantFoundation\Dto\AgentActionDecision;
+use Base3\CoreFoundation\Api\IComponent;
 
 /**
  * Interface IAgentActionPolicy

@@ -14,10 +14,10 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\RealtimeSpeechToTextSession;
-use AssistantFoundation\Dto\RealtimeSpeechToTextSessionRequest;
+use Base3\AssistantFoundation\Dto\RealtimeSpeechToTextSession;
+use Base3\AssistantFoundation\Dto\RealtimeSpeechToTextSessionRequest;
 
 /**
  * Creates short-lived browser sessions for realtime speech transcription.

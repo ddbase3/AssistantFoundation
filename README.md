@@ -26,7 +26,7 @@ AssistantFoundation is the correct home when a type is intended to cross plugin 
 * a DTO is exchanged between runtime routers, agent implementations, UIs, jobs, or integrations;
 * a provider-neutral AI, retrieval, parser, or speech result needs a common representation.
 
-MissionBay-specific factories, flow nodes, resource factories, profile repositories, orchestration helpers, and internal state access remain in `MissionBay\Api` or MissionBay implementation namespaces.
+MissionBay-specific factories, flow nodes, resource factories, profile repositories, orchestration helpers, and internal state access remain in `Base3\MissionBay\Api` or MissionBay implementation namespaces.
 
 Shared concrete routing and runtime composition belongs in AssistantRuntime.
 

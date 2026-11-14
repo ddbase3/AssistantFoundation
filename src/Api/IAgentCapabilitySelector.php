@@ -15,11 +15,11 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentCapabilityCatalog;
-use AssistantFoundation\Dto\AgentCapabilitySelection;
-use AssistantFoundation\Dto\AgentCapabilitySelectionRequest;
+use Base3\AssistantFoundation\Dto\AgentCapabilityCatalog;
+use Base3\AssistantFoundation\Dto\AgentCapabilitySelection;
+use Base3\AssistantFoundation\Dto\AgentCapabilitySelectionRequest;
 
 /**
  * Selects the run-local capability subset that is exposed to one model call.

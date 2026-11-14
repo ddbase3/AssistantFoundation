@@ -15,11 +15,11 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\RetrievalIndexItem;
-use AssistantFoundation\Dto\RetrievalSearchRequest;
-use AssistantFoundation\Dto\RetrievalSearchResult;
+use Base3\AssistantFoundation\Dto\RetrievalIndexItem;
+use Base3\AssistantFoundation\Dto\RetrievalSearchRequest;
+use Base3\AssistantFoundation\Dto\RetrievalSearchResult;
 
 /**
  * Generic storage and retrieval contract for multi-representation search indexes.

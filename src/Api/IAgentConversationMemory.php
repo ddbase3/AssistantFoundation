@@ -15,10 +15,10 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentConversation;
-use AssistantFoundation\Dto\AgentConversationScope;
+use Base3\AssistantFoundation\Dto\AgentConversation;
+use Base3\AssistantFoundation\Dto\AgentConversationScope;
 
 /**
  * Stores visible conversation metadata and message history.

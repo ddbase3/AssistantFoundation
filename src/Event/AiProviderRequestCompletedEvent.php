@@ -15,10 +15,10 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Event;
+namespace Base3\AssistantFoundation\Event;
 
-use AssistantFoundation\Dto\AiResultMetadata;
-use AssistantFoundation\Dto\AiUsage;
+use Base3\AssistantFoundation\Dto\AiResultMetadata;
+use Base3\AssistantFoundation\Dto\AiUsage;
 use InvalidArgumentException;
 
 /**

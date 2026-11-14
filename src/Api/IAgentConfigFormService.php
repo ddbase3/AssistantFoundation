@@ -14,9 +14,9 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use Base3\Api\IMvcView;
+use Base3\CoreFoundation\Api\IMvcView;
 
 /**
  * Provides runtime-selectable agent configuration fields for host displays.

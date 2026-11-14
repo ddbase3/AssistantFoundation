@@ -15,9 +15,9 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentToolCacheEntry;
+use Base3\AssistantFoundation\Dto\AgentToolCacheEntry;
 
 /**
  * Interface IAgentToolResultCache

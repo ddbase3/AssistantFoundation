@@ -1,7 +1,7 @@
 {
 	"manifestVersion": 1,
 	"name": "AssistantFoundation",
-	"namespace": "AssistantFoundation",
+	"namespace": "Base3\\AssistantFoundation",
 	"version": "4.18.0",
 	"description": "Shared contracts for assistant, agent, AI service, retrieval, parser, speech, and response-extension integrations in BASE3.",
 	"license": "GPL-3.0-or-later",
@@ -14,7 +14,7 @@
 	],
 	"repository": "https://github.com/ddbase3/AssistantFoundation",
 	"dependencies": {
-		"Base3Framework": ">=4.10.0",
+		"CoreFoundation": ">=4.10.0",
 		"MediaFoundation": ">=4.1.0"
 	}
 }

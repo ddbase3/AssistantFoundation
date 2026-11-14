@@ -14,10 +14,10 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation;
+namespace Base3\AssistantFoundation;
 
-use Base3\Api\IContainer;
-use Base3\Api\IPlugin;
+use Base3\CoreFoundation\Api\IContainer;
+use Base3\CoreFoundation\Api\IPlugin;
 
 class AssistantFoundationPlugin implements IPlugin {
 

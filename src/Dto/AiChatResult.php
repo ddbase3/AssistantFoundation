@@ -15,9 +15,9 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Dto;
+namespace Base3\AssistantFoundation\Dto;
 
-use AssistantFoundation\Api\IAiResult;
+use Base3\AssistantFoundation\Api\IAiResult;
 
 /**
  * Provider-neutral result of one non-streaming chat-model call.

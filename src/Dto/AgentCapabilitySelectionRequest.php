@@ -15,9 +15,9 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Dto;
+namespace Base3\AssistantFoundation\Dto;
 
-use AssistantFoundation\Api\IAiChatModel;
+use Base3\AssistantFoundation\Api\IAiChatModel;
 
 /**
  * Context supplied to a capability selector for one model decision.

@@ -15,10 +15,10 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentExecutionRequest;
-use Base3\Api\IBase;
+use Base3\AssistantFoundation\Dto\AgentExecutionRequest;
+use Base3\CoreFoundation\Api\IBase;
 
 /**
  * Resolves configured tool profiles into one run-local executable tool set.

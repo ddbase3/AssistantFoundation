@@ -15,12 +15,12 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Api;
+namespace Base3\AssistantFoundation\Api;
 
-use AssistantFoundation\Dto\AgentConversation;
-use AssistantFoundation\Dto\AgentConversationRequest;
-use AssistantFoundation\Dto\AgentConversationState;
-use Base3\Api\IBase;
+use Base3\AssistantFoundation\Dto\AgentConversation;
+use Base3\AssistantFoundation\Dto\AgentConversationRequest;
+use Base3\AssistantFoundation\Dto\AgentConversationState;
+use Base3\CoreFoundation\Api\IBase;
 
 /**
  * Runtime-neutral access to the configured conversation memory of an agent.

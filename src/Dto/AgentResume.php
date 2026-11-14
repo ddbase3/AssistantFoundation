@@ -15,7 +15,7 @@
  * https://github.com/ddbase3/AssistantFoundation
  **********************************************************************/
 
-namespace AssistantFoundation\Dto;
+namespace Base3\AssistantFoundation\Dto;
 
 /** Transport-neutral resume input containing an opaque handle and either explicit responses or natural-language input. */
 final class AgentResume {
