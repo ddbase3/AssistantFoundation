@@ -110,6 +110,18 @@ final class AgentInteractionRequest {
 		];
 	}
 
+	/**
+	 * User-facing representation; internal tool/resume metadata stays server-side.
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function toPublicArray(): array {
+		$result = $this->toArray();
+		$result['metadata'] = [];
+		$result['action']['metadata'] = [];
+		return $result;
+	}
+
 	/** @param array<string,mixed> $data */
 	public static function fromArray(array $data): self {
 		$action = $data['action'] ?? null;

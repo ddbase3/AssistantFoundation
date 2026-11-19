@@ -224,3 +224,9 @@ GPL-3.0.
 ordinary editable `agent` SettingsStore records. Implementations own storage
 and configuration management; agent execution remains behind
 `IAgentExecutionService`. See [agent runtime contracts](docs/agent-runtime-contracts.md).
+
+## Public HITL request serialization and verified actor scopes (phase 2)
+
+`AgentInteractionRequest::toArray()` preserves internal metadata for server-side orchestration, and `toPublicArray()` deliberately removes that metadata while retaining the request, action details, fingerprint and risk required for an informed human decision. A UI or external API must not expose a persisted suspension's internal resume/commit data. The existing DTO and repository contracts remain authoritative.
+
+`AgentSuspensionScope::forConversation(channelId, conversationId, subjectKey)` accepts an optional, **server-verified** subject key to isolate active suspensions between users sharing a channel and conversation ID. Calls omitting `subjectKey` retain their original exact hash. This is a scope isolation detail, not a second authorization service or conversation store. The runtime owner remains responsible for validating and consuming the opaque resume handle.

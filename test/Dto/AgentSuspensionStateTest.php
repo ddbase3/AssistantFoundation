@@ -63,4 +63,14 @@ final class AgentSuspensionStateTest extends TestCase {
 			}
 		}
 	}
+	public function testBothAwaitingStatusesCanCarryAnOpaqueResumeHandle(): void {
+		foreach ([AgentExecutionStatus::AWAITING_APPROVAL, AgentExecutionStatus::AWAITING_INPUT] as $status) {
+			$state = new AgentSuspensionState(true, $status, [['id' => 'request-1']], 'resume-token');
+			$this->assertTrue($state->isSuspended());
+			$this->assertTrue($state->isActive());
+			$this->assertSame('resume-token', $state->getResumeHandle());
+			$this->assertSame($status, $state->getStatus());
+		}
+	}
+
 }

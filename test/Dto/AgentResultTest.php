@@ -52,4 +52,23 @@ final class AgentResultTest extends TestCase {
 		$this->expectException(\InvalidArgumentException::class);
 		new AgentResult('unknown', AgentState::empty());
 	}
+	public function testSuspendedResultCanContainNoAnswerWhilePreservingReviewRequests(): void {
+		foreach ([AgentExecutionStatus::AWAITING_APPROVAL, AgentExecutionStatus::AWAITING_INPUT] as $status) {
+			$suspension = new \Base3\AssistantFoundation\Dto\AgentSuspensionState(
+				true,
+				$status,
+				[['id' => 'approval-1']],
+				'opaque-handle'
+			);
+			$state = AgentState::empty()->withSuspension($suspension);
+			$result = new AgentResult($status, $state, ['content' => '']);
+
+			$this->assertSame(['content' => ''], $result->getOutput());
+			$this->assertTrue($result->isSuspended());
+			$this->assertFalse($result->isCompleted());
+			$this->assertFalse($result->hasFailure());
+			$this->assertSame([['id' => 'approval-1']], $result->getState()->getSuspension()->getInteractionRequests());
+		}
+	}
+
 }

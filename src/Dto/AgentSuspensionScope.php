@@ -20,13 +20,23 @@ namespace Base3\AssistantFoundation\Dto;
 /** Canonical technical scope identifiers for resumable agent suspensions. */
 final class AgentSuspensionScope {
 
-	public static function forConversation(string $channelId, string $conversationId): string {
+	/**
+	 * @param string $subjectKey Optional server-verified actor identity for scoped approval isolation.
+	 * A missing subject retains the established conversation scope for existing callers.
+	 */
+	public static function forConversation(string $channelId, string $conversationId, string $subjectKey = ''): string {
 		$channelId = trim($channelId);
 		$conversationId = trim($conversationId);
+		$subjectKey = trim($subjectKey);
 		if ($channelId === '' || $conversationId === '') {
 			return '';
 		}
 
-		return 'conversation:' . hash('sha256', $channelId . "\0" . $conversationId);
+		$source = $channelId . "\0" . $conversationId;
+		if ($subjectKey !== '') {
+			$source .= "\0" . $subjectKey;
+		}
+
+		return 'conversation:' . hash('sha256', $source);
 	}
 }

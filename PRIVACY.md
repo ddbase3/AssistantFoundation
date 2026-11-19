@@ -277,3 +277,9 @@ personal information into default settings. The active storage implementation,
 executing plugin and host are responsible for authorization, data minimization,
 retention and deletion of persisted agent settings and conversations. No new
 storage, recipient or retention interval is introduced in AssistantFoundation.
+
+## Phase 2 public HITL projection and subject-bound suspension scope (2026-11-19)
+
+The contract-only `AgentInteractionRequest::toPublicArray()` projection omits internal metadata that could contain resumable tool call data or mutation-commit snapshots. It still exposes the action arguments, risk, summary and explanation required for review, which may contain personal or confidential values. The original `toArray()` remains available for server-side orchestration and persistence; callers must choose the correct boundary. This Foundation change itself creates no new storage, log, network request, credential or retention policy.
+
+`AgentSuspensionScope::forConversation()` now supports an optional verified actor key as input to an opaque scope hash. The identity source is the consuming host and cannot be trusted merely because an external client supplies a string. Existing two-argument scopes remain unchanged, as do configured suspension repository TTL, replay and erasure behavior. This is not an authorization decision or durable approval grant.

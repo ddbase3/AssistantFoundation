@@ -30,4 +30,28 @@ final class AgentExecutionResultTest extends TestCase {
 		$this->assertSame($result, $dto->getAgentResult());
 		$this->assertSame(null, (new AgentExecutionResult([]))->getAgentResult());
 	}
+	public function testSuspendedExecutionNeedsNoFinalAssistantMessage(): void {
+		foreach ([
+			\Base3\AssistantFoundation\Dto\AgentExecutionStatus::AWAITING_APPROVAL,
+			\Base3\AssistantFoundation\Dto\AgentExecutionStatus::AWAITING_INPUT
+		] as $status) {
+			$suspension = new \Base3\AssistantFoundation\Dto\AgentSuspensionState(
+				true,
+				$status,
+				[['id' => 'request-1', 'kind' => 'approval']],
+				'resume-token'
+			);
+			$state = \Base3\AssistantFoundation\Dto\AgentState::empty()->withSuspension($suspension);
+			$agentResult = new \Base3\AssistantFoundation\Dto\AgentResult($status, $state);
+			$result = new AgentExecutionResult([], [], $agentResult);
+
+			$this->assertSame([], $result->getOutput());
+			$this->assertSame($agentResult, $result->getAgentResult());
+			$this->assertTrue($agentResult->isSuspended());
+			$this->assertFalse($agentResult->isCompleted());
+			$this->assertFalse($agentResult->hasFailure());
+			$this->assertSame('resume-token', $agentResult->getState()->getSuspension()->getResumeHandle());
+		}
+	}
+
 }

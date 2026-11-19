@@ -40,6 +40,20 @@ final class AgentInteractionRequestTest extends TestCase {
 		}
 	}
 
+	public function testPublicRequestNeverContainsInternalToolMetadata(): void {
+		$action = new AgentAction('call-7', AgentAction::TYPE_TOOL_CALL, 'delete_record', ['id' => 7], ['private' => 'action-internal']);
+		$request = new AgentInteractionRequest(
+			'req-7', 'approval', $action, 'fingerprint', 'Review', 'Approve?', ['record' => 7], 'high',
+			['tool_call' => ['private' => 'secret'], 'mutation_commit_snapshot' => ['internal' => true]]
+		);
+		$public = $request->toPublicArray();
+		$this->assertSame([], $public['metadata']);
+		$this->assertSame([], $public['action']['metadata']);
+		$this->assertSame(['id' => 7], $public['action']['input']);
+		$this->assertSame('fingerprint', $public['action_fingerprint']);
+		$this->assertArrayHasKey('metadata', $request->toArray());
+	}
+
 	public function testUntrustedArraysAreNotCastToReviewSummaryOrMetadata(): void {
 		$request = AgentInteractionRequest::fromArray([
 			'id' => 'req', 'kind' => 'approval',
