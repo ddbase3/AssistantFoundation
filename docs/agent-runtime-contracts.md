@@ -146,3 +146,7 @@ responsibility and execution continues through `IAgentExecutionService`.
 
 Definitions are project or domain code. They are not a replacement for
 configurable orchestrator profiles, model presets or memory implementations.
+
+## Code-owned orchestration profiles
+
+`IAgentOrchestratorProfile` extends `IBase` and defines discoverable code-owned orchestration configuration. `getName()` is the lowercase unqualified class name, `getRuntimeId()` is static and matches the consuming runtime, `getId()` is the stable profile ID within that runtime, and `getSettings()` returns runtime-specific configuration without secrets or per-execution state. The owning runtime discovers, validates and materializes settings; the contract provides no engine, registry or persistence. Presentation labels may be localized by the owning plugin. No MissionBay DTO is part of the Foundation contract.

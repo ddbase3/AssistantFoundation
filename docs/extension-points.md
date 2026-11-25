@@ -1395,3 +1395,7 @@ Chatbot provides the registry and settings service. The optional ChatbotExtensio
 Implement this small presentation contract together with `IAssistantResponseExtension` when an extension can provide practical prompts for administration or documentation. The prompts demonstrate the capability; they do not alter model execution and are not added to the system prompt.
 
 The consuming administration may localize or replace the returned fallback prompts. Capability implementations keep their examples with the same plugin that owns the model contract and browser adapter.
+
+## Code-owned orchestration profiles
+
+`IAgentOrchestratorProfile` extends `IBase` and defines discoverable code-owned orchestration configuration. `getName()` is the lowercase unqualified class name, `getRuntimeId()` is static and matches the consuming runtime, `getId()` is the stable profile ID within that runtime, and `getSettings()` returns runtime-specific configuration without secrets or per-execution state. The owning runtime discovers, validates and materializes settings; the contract provides no engine, registry or persistence. Presentation labels may be localized by the owning plugin. No MissionBay DTO is part of the Foundation contract.

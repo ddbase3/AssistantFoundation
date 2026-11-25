@@ -283,3 +283,7 @@ storage, recipient or retention interval is introduced in AssistantFoundation.
 The contract-only `AgentInteractionRequest::toPublicArray()` projection omits internal metadata that could contain resumable tool call data or mutation-commit snapshots. It still exposes the action arguments, risk, summary and explanation required for review, which may contain personal or confidential values. The original `toArray()` remains available for server-side orchestration and persistence; callers must choose the correct boundary. This Foundation change itself creates no new storage, log, network request, credential or retention policy.
 
 `AgentSuspensionScope::forConversation()` now supports an optional verified actor key as input to an opaque scope hash. The identity source is the consuming host and cannot be trusted merely because an external client supplies a string. Existing two-argument scopes remain unchanged, as do configured suspension repository TTL, replay and erasure behavior. This is not an authorization decision or durable approval grant.
+
+## Code-owned orchestration profile contract
+
+`IAgentOrchestratorProfile` describes immutable technical settings for a specific runtime. Definitions must not contain secrets or per-execution state or read/write persistent agent/profile settings. The interface does not transmit or store data. Actual orchestration, disclosure, retention, authorization and deletion remain the responsibility of the consuming runtime and configured components.

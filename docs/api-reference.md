@@ -615,3 +615,15 @@ The current package contains the following shared DTO files:
 
 * `AiProviderRequestCompletedEvent` provides normalized provider-request completion data for event consumers.
 * `AgentSuspensionRepositoryException` is the shared suspension repository failure category.
+
+### `IAgentOrchestratorProfile`
+
+Source: `src/Api/IAgentOrchestratorProfile.php`.
+
+Declaration: `IAgentOrchestratorProfile extends IBase`.
+
+* `static getRuntimeId(): string`
+* `getId(): string`
+* `getSettings(): array`
+
+`IAgentOrchestratorProfile` extends `IBase` and defines discoverable code-owned orchestration configuration. `getName()` is the lowercase unqualified class name, `getRuntimeId()` is static and matches the consuming runtime, `getId()` is the stable profile ID within that runtime, and `getSettings()` returns runtime-specific configuration without secrets or per-execution state. The owning runtime discovers, validates and materializes settings; the contract provides no engine, registry or persistence. Presentation labels may be localized by the owning plugin. No MissionBay DTO is part of the Foundation contract.
