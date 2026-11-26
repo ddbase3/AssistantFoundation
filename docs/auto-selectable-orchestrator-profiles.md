@@ -1,0 +1,5 @@
+# Automatic orchestrator profile selection
+
+`Base3\AssistantFoundation\Api\IAutoSelectableAgentOrchestratorProfile` extends the existing `IAgentOrchestratorProfile` contract without changing it. A definition opts in by implementing `supportsAutoSelection(array $agentSettings, bool $requiresToolLoop): bool` and `getAutoSelectionPriority(): int`. Its runtime remains responsible for deriving requirements from the actual effective configuration, filtering eligible definitions and selecting a suitable profile. Checks are read-only, deterministic and must not perform model or tool calls. Higher priority wins; equal priorities are ordered by profile ID. A failed check is an error rather than a silent fallback. Explicit profile choices do not invoke suitability checks.
+
+The interface defines no execution path, storage, data transfers, retention or authorization changes. Runtime implementations own those responsibilities. `auto` is a configuration selection value, not a profile definition. The resulting concrete profile must remain authoritative for a suspended execution.
